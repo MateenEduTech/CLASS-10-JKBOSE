@@ -1,0 +1,2703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1a237e">
+<meta name="description" content="JKBOSE Class 10 Social Science Interactive Learning App by Mateen Yousuf">
+<link rel="manifest" href="manifest.json">
+<title>Class 10 SST – Mateen Yousuf</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+/* ===== CSS VARIABLES ===== */
+:root {
+  --primary: #1a237e;
+  --primary-light: #3949ab;
+  --accent: #ff6f00;
+  --accent2: #00897b;
+  --accent3: #d81b60;
+  --gold: #ffd600;
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --bg3: #21262d;
+  --card: #1c2128;
+  --text: #e6edf3;
+  --text2: #8b949e;
+  --green: #56d364;
+  --red: #f85149;
+  --radius: 16px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --glow: 0 0 20px rgba(57,73,171,0.5);
+}
+[data-theme="light"] {
+  --bg: #f0f4ff; --bg2: #ffffff; --bg3: #e8edf8;
+  --card: #ffffff; --text: #1a1f36; --text2: #4a5568;
+  --shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+/* ===== RESET ===== */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  transition:background 0.3s,color 0.3s;
+}
+
+/* ===== SPLASH / TITLE SCREEN ===== */
+#splash{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0d1117 0%,#1a237e 40%,#311b92 70%,#0d1117 100%);
+  background-size:400% 400%;
+  animation:gradientShift 8s ease infinite;
+  overflow:hidden;
+}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+/* Floating particles */
+.particle{
+  position:absolute;border-radius:50%;opacity:0.15;
+  animation:float linear infinite;
+}
+@keyframes float{
+  0%{transform:translateY(100vh) rotate(0deg);opacity:0}
+  10%{opacity:0.2}
+  90%{opacity:0.1}
+  100%{transform:translateY(-100px) rotate(720deg);opacity:0}
+}
+
+.splash-content{
+  text-align:center;z-index:2;padding:20px;
+  animation:splashIn 1s ease forwards;
+}
+@keyframes splashIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+
+.splash-badge{
+  background:rgba(255,214,0,0.15);
+  border:1px solid rgba(255,214,0,0.4);
+  color:var(--gold);
+  padding:6px 20px;border-radius:50px;
+  font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:20px;display:inline-block;
+}
+
+.splash-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.8rem,5vw,3rem);
+  font-weight:900;
+  color:#fff;
+  line-height:1.2;
+  margin-bottom:8px;
+  text-shadow:0 2px 20px rgba(57,73,171,0.8);
+}
+.splash-title span{color:var(--gold);}
+
+.splash-subtitle{
+  font-size:0.9rem;color:rgba(255,255,255,0.6);
+  margin-bottom:30px;letter-spacing:1px;
+}
+
+/* Author photo circle */
+.author-photo-wrap{
+  position:relative;margin:0 auto 20px;width:140px;height:140px;
+}
+.author-glow-ring{
+  position:absolute;inset:-6px;border-radius:50%;
+  background:conic-gradient(from 0deg,#ffd600,#ff6f00,#d81b60,#3949ab,#00897b,#ffd600);
+  animation:spinRing 4s linear infinite;
+}
+@keyframes spinRing{to{transform:rotate(360deg)}}
+.author-photo-inner{
+  position:absolute;inset:4px;border-radius:50%;
+  background:#1a237e;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  border:3px solid #0d1117;
+}
+.author-photo-inner img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.author-placeholder{font-size:3.5rem;}
+
+.author-name{font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:4px;}
+.author-designation{font-size:0.8rem;color:rgba(255,255,255,0.65);line-height:1.6;}
+
+/* Globe decorations */
+.globe-deco{
+  position:absolute;font-size:4rem;opacity:0.1;
+  animation:floatGlobe 6s ease-in-out infinite;
+}
+@keyframes floatGlobe{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-20px) rotate(5deg)}}
+
+/* Start button */
+.start-btn{
+  margin-top:30px;
+  padding:16px 48px;
+  background:linear-gradient(135deg,var(--accent),#ff8f00);
+  color:#fff;font-weight:700;font-size:1rem;
+  border:none;border-radius:50px;cursor:pointer;
+  box-shadow:0 4px 20px rgba(255,111,0,0.5);
+  letter-spacing:1px;text-transform:uppercase;
+  animation:pulse 2s ease-in-out infinite;
+  transition:transform 0.2s;
+}
+.start-btn:hover{transform:scale(1.05);animation:none;}
+@keyframes pulse{0%,100%{box-shadow:0 4px 20px rgba(255,111,0,0.4)}50%{box-shadow:0 4px 40px rgba(255,111,0,0.8)}}
+
+/* ===== MAIN APP ===== */
+#app{display:none;min-height:100vh;}
+
+/* ===== TOP BAR ===== */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(13,17,23,0.95);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  padding:12px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+[data-theme="light"] .topbar{background:rgba(255,255,255,0.95);}
+.topbar-title{
+  font-weight:700;font-size:0.95rem;
+  background:linear-gradient(135deg,#64b5f6,#ce93d8);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.topbar-actions{display:flex;gap:8px;}
+.icon-btn{
+  background:var(--bg3);border:1px solid rgba(255,255,255,0.1);
+  color:var(--text);padding:8px;border-radius:10px;
+  cursor:pointer;font-size:1rem;transition:all 0.2s;
+  display:flex;align-items:center;justify-content:center;width:38px;height:38px;
+}
+.icon-btn:hover{background:var(--primary);border-color:var(--primary);}
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(13,17,23,0.97);
+  backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,0.08);
+  display:flex;justify-content:space-around;align-items:center;
+  padding:8px 4px 12px;
+}
+[data-theme="light"] .bottom-nav{background:rgba(255,255,255,0.97);}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:6px 12px;border-radius:12px;cursor:pointer;
+  transition:all 0.2s;color:var(--text2);font-size:0.65rem;
+  border:none;background:none;
+}
+.nav-item.active{color:var(--primary-light);}
+.nav-item .nav-icon{font-size:1.3rem;}
+.nav-item.active .nav-icon{animation:bounceIcon 0.4s ease;}
+@keyframes bounceIcon{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+
+/* ===== PAGES ===== */
+.page{display:none;padding:16px 16px 80px;animation:pageIn 0.3s ease;}
+.page.active{display:block;}
+@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== HOME PAGE ===== */
+.home-hero{
+  background:linear-gradient(135deg,#1a237e,#311b92,#4a148c);
+  border-radius:20px;padding:24px;margin-bottom:20px;position:relative;overflow:hidden;
+}
+.home-hero::before{
+  content:'🌍';position:absolute;right:-10px;top:-10px;font-size:8rem;opacity:0.1;
+}
+.home-hero-label{color:rgba(255,255,255,0.6);font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.home-hero h1{color:#fff;font-size:1.5rem;font-weight:800;line-height:1.3;margin-bottom:8px;}
+.home-hero p{color:rgba(255,255,255,0.7);font-size:0.85rem;line-height:1.6;}
+
+.progress-overview{
+  background:var(--card);border-radius:16px;padding:16px;margin-bottom:20px;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.progress-overview h3{font-size:0.9rem;color:var(--text2);margin-bottom:12px;}
+.progress-bar-wrap{background:var(--bg3);border-radius:8px;height:10px;overflow:hidden;margin-bottom:8px;}
+.progress-bar-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,#3949ab,#00897b);transition:width 1s ease;}
+.progress-stats{display:flex;gap:12px;}
+.stat-chip{
+  flex:1;background:var(--bg3);border-radius:12px;padding:12px;text-align:center;
+}
+.stat-chip .stat-val{font-size:1.4rem;font-weight:800;color:var(--gold);}
+.stat-chip .stat-label{font-size:0.7rem;color:var(--text2);}
+
+/* Subject cards */
+.section-title{font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--text);}
+.subject-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.subject-card{
+  border-radius:16px;padding:16px;cursor:pointer;
+  transition:all 0.3s;position:relative;overflow:hidden;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.subject-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);}
+.subject-card .subj-icon{font-size:2rem;margin-bottom:8px;display:block;}
+.subject-card .subj-name{font-weight:700;font-size:0.9rem;}
+.subject-card .subj-count{font-size:0.75rem;opacity:0.7;margin-top:2px;}
+.subj-history{background:linear-gradient(135deg,#b71c1c,#e53935);}
+.subj-geo{background:linear-gradient(135deg,#1b5e20,#43a047);}
+.subj-pols{background:linear-gradient(135deg,#0d47a1,#1976d2);}
+.subj-eco{background:linear-gradient(135deg,#e65100,#fb8c00);}
+.subject-card *{color:#fff;}
+
+/* ===== CHAPTERS PAGE ===== */
+.chapter-filters{display:flex;gap:8px;overflow-x:auto;margin-bottom:16px;padding-bottom:4px;}
+.filter-chip{
+  white-space:nowrap;padding:6px 16px;border-radius:50px;
+  background:var(--bg3);border:1px solid rgba(255,255,255,0.1);
+  color:var(--text2);font-size:0.8rem;cursor:pointer;transition:all 0.2s;
+}
+.filter-chip.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+.chapter-list{display:flex;flex-direction:column;gap:10px;}
+.chapter-card{
+  background:var(--card);border-radius:16px;padding:16px;
+  border:1px solid rgba(255,255,255,0.06);cursor:pointer;
+  transition:all 0.3s;display:flex;align-items:center;gap:14px;
+}
+.chapter-card:hover{border-color:rgba(57,73,171,0.5);transform:translateX(4px);}
+.ch-icon{
+  width:48px;height:48px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;
+}
+.ch-info{flex:1;}
+.ch-title{font-weight:600;font-size:0.9rem;line-height:1.3;}
+.ch-subject{font-size:0.72rem;color:var(--text2);margin-top:2px;}
+.ch-progress{font-size:0.72rem;margin-top:4px;}
+.ch-done{color:var(--green);}
+.ch-arrow{color:var(--text2);font-size:1rem;}
+
+/* ===== CHAPTER DETAIL ===== */
+.chapter-detail{display:none;}
+.chapter-detail.active{display:block;}
+.ch-detail-header{
+  background:linear-gradient(135deg,#1a237e,#3949ab);
+  border-radius:20px;padding:20px;margin-bottom:16px;color:#fff;
+}
+.ch-detail-header h2{font-size:1.2rem;font-weight:800;margin-bottom:4px;}
+.ch-detail-header p{font-size:0.8rem;opacity:0.7;}
+
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;padding-bottom:4px;}
+.tab-btn{
+  white-space:nowrap;padding:8px 16px;border-radius:10px;
+  background:var(--bg3);border:none;color:var(--text2);
+  font-size:0.8rem;cursor:pointer;font-family:'Poppins',sans-serif;transition:all 0.2s;
+}
+.tab-btn.active{background:var(--primary);color:#fff;}
+
+.tab-content{display:none;}
+.tab-content.active{display:block;animation:pageIn 0.3s ease;}
+
+/* Concept box */
+.concept-box{
+  background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.concept-box h4{font-size:0.95rem;font-weight:700;margin-bottom:10px;color:var(--accent);}
+.concept-box p,.concept-box li{font-size:0.85rem;color:var(--text2);line-height:1.7;}
+.concept-box ul{padding-left:18px;}
+.concept-box ul li{margin-bottom:4px;}
+
+/* Flashcards */
+.flashcard-wrap{perspective:1000px;margin-bottom:20px;}
+.flashcard{
+  width:100%;min-height:180px;position:relative;
+  transform-style:preserve-3d;transition:transform 0.6s ease;cursor:pointer;
+}
+.flashcard.flipped{transform:rotateY(180deg);}
+.card-front,.card-back{
+  position:absolute;inset:0;
+  backface-visibility:hidden;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;text-align:center;
+}
+.card-front{background:linear-gradient(135deg,#1a237e,#311b92);color:#fff;}
+.card-back{background:linear-gradient(135deg,#00695c,#00897b);color:#fff;transform:rotateY(180deg);}
+.card-q{font-size:1rem;font-weight:600;line-height:1.5;}
+.card-a{font-size:0.9rem;line-height:1.6;}
+.card-hint{font-size:0.7rem;opacity:0.6;margin-top:8px;}
+.card-nav{display:flex;justify-content:center;align-items:center;gap:20px;margin-top:12px;}
+.card-nav-btn{
+  background:var(--bg3);border:1px solid rgba(255,255,255,0.1);
+  color:var(--text);padding:8px 20px;border-radius:10px;cursor:pointer;font-size:0.85rem;
+  font-family:'Poppins',sans-serif;transition:all 0.2s;
+}
+.card-nav-btn:hover{background:var(--primary);}
+.card-counter{font-size:0.8rem;color:var(--text2);}
+
+/* Quiz */
+.quiz-question{
+  background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.quiz-q-text{font-size:0.9rem;font-weight:600;margin-bottom:14px;line-height:1.5;}
+.quiz-options{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{
+  padding:12px 16px;border-radius:12px;
+  background:var(--bg3);border:2px solid transparent;
+  cursor:pointer;font-size:0.85rem;font-family:'Poppins',sans-serif;
+  color:var(--text);text-align:left;transition:all 0.2s;
+}
+.quiz-opt:hover:not(:disabled){border-color:var(--primary-light);}
+.quiz-opt.correct{background:rgba(86,211,100,0.15);border-color:var(--green);color:var(--green);}
+.quiz-opt.wrong{background:rgba(248,81,73,0.15);border-color:var(--red);color:var(--red);}
+.quiz-feedback{font-size:0.8rem;margin-top:8px;padding:8px;border-radius:8px;}
+.quiz-submit{
+  width:100%;padding:14px;border-radius:12px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-light));
+  color:#fff;font-weight:700;font-size:0.95rem;border:none;cursor:pointer;
+  font-family:'Poppins',sans-serif;margin-top:12px;transition:all 0.2s;
+}
+.quiz-submit:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(57,73,171,0.4);}
+.quiz-score{
+  text-align:center;padding:30px;background:var(--card);
+  border-radius:20px;border:1px solid rgba(255,255,255,0.06);
+}
+.quiz-score .score-val{font-size:3rem;font-weight:900;color:var(--gold);}
+.quiz-score .score-label{color:var(--text2);font-size:0.9rem;}
+
+/* Competency / Reasoning */
+.reasoning-box{
+  background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;
+  border-left:4px solid var(--accent);
+}
+.reasoning-box h4{font-size:0.9rem;font-weight:700;color:var(--accent);margin-bottom:8px;}
+.reasoning-box p{font-size:0.85rem;line-height:1.6;color:var(--text2);margin-bottom:10px;}
+.reasoning-textarea{
+  width:100%;padding:12px;border-radius:10px;
+  background:var(--bg3);border:1px solid rgba(255,255,255,0.1);
+  color:var(--text);font-family:'Poppins',sans-serif;font-size:0.85rem;
+  resize:vertical;min-height:100px;
+}
+
+/* Activity */
+.activity-box{
+  background:linear-gradient(135deg,#1b5e20,#2e7d32);
+  border-radius:16px;padding:16px;color:#fff;
+}
+.activity-box h4{font-size:0.95rem;font-weight:700;margin-bottom:8px;}
+.activity-box p{font-size:0.85rem;line-height:1.6;opacity:0.9;}
+
+/* Simulation */
+.simulation-box{
+  background:var(--card);border-radius:16px;overflow:hidden;margin-bottom:12px;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.sim-header{
+  background:linear-gradient(135deg,#37474f,#546e7a);
+  padding:12px 16px;color:#fff;font-weight:700;font-size:0.9rem;
+}
+.sim-body{padding:16px;}
+.sim-canvas{
+  width:100%;height:200px;border-radius:10px;
+  background:var(--bg3);position:relative;overflow:hidden;
+}
+
+/* Timeline */
+.timeline{position:relative;padding-left:24px;}
+.timeline::before{
+  content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--primary),var(--accent2));
+}
+.tl-item{position:relative;margin-bottom:20px;}
+.tl-dot{
+  position:absolute;left:-20px;top:4px;width:12px;height:12px;
+  border-radius:50%;background:var(--accent);
+  box-shadow:0 0 8px rgba(255,111,0,0.6);
+}
+.tl-year{font-size:0.75rem;color:var(--accent);font-weight:700;margin-bottom:4px;}
+.tl-event{font-size:0.85rem;line-height:1.5;color:var(--text2);}
+
+/* Interactive Map */
+.map-container{
+  background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.map-title{font-weight:700;font-size:0.9rem;margin-bottom:12px;}
+.india-map-svg{width:100%;max-height:300px;cursor:pointer;}
+.map-info{
+  margin-top:12px;padding:12px;border-radius:10px;
+  background:var(--bg3);font-size:0.82rem;color:var(--text2);min-height:50px;
+}
+
+/* ===== QUIZ PAGE ===== */
+.quiz-page-header{
+  background:linear-gradient(135deg,#d81b60,#880e4f);
+  border-radius:20px;padding:20px;margin-bottom:16px;color:#fff;
+  display:flex;align-items:center;gap:12px;
+}
+.quiz-page-header .qph-icon{font-size:2.5rem;}
+.quiz-page-header h2{font-size:1.2rem;font-weight:800;}
+.quiz-page-header p{font-size:0.8rem;opacity:0.7;}
+.quiz-chapter-select{
+  background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;
+  border:1px solid rgba(255,255,255,0.06);
+}
+
+/* ===== PROGRESS PAGE ===== */
+.progress-header{
+  background:linear-gradient(135deg,#1b5e20,#2e7d32);
+  border-radius:20px;padding:20px;margin-bottom:16px;color:#fff;
+}
+.progress-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.prog-stat-card{
+  background:var(--card);border-radius:16px;padding:16px;
+  border:1px solid rgba(255,255,255,0.06);text-align:center;
+}
+.prog-stat-val{font-size:2rem;font-weight:900;margin-bottom:4px;}
+.prog-stat-label{font-size:0.75rem;color:var(--text2);}
+.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.badge-card{
+  background:var(--card);border-radius:16px;padding:14px;text-align:center;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.badge-icon{font-size:2rem;margin-bottom:6px;}
+.badge-name{font-size:0.7rem;color:var(--text2);}
+.badge-card.earned{border-color:var(--gold);background:rgba(255,214,0,0.05);}
+
+/* ===== NOTES PAGE ===== */
+.notes-header{
+  background:linear-gradient(135deg,#4a148c,#6a1b9a);
+  border-radius:20px;padding:20px;margin-bottom:16px;color:#fff;
+}
+.note-input-wrap{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.06);}
+.note-textarea{
+  width:100%;padding:14px;border-radius:12px;
+  background:var(--bg3);border:1px solid rgba(255,255,255,0.1);
+  color:var(--text);font-family:'Poppins',sans-serif;font-size:0.9rem;
+  resize:vertical;min-height:120px;
+}
+.note-save-btn{
+  margin-top:10px;padding:12px 24px;border-radius:12px;
+  background:var(--primary);color:#fff;border:none;cursor:pointer;
+  font-family:'Poppins',sans-serif;font-weight:600;font-size:0.9rem;
+}
+.saved-notes{margin-top:16px;}
+.note-item{
+  background:var(--card);border-radius:14px;padding:14px;margin-bottom:10px;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.note-item-text{font-size:0.85rem;line-height:1.6;color:var(--text2);}
+.note-item-meta{font-size:0.7rem;color:var(--text2);margin-top:6px;display:flex;justify-content:space-between;}
+.note-del-btn{color:var(--red);border:none;background:none;cursor:pointer;font-size:0.75rem;}
+
+/* ===== RANDOM QUESTION ===== */
+.rq-wrap{
+  background:linear-gradient(135deg,#00695c,#00897b);
+  border-radius:20px;padding:24px;margin-bottom:16px;color:#fff;text-align:center;
+}
+.rq-question{font-size:1rem;font-weight:700;line-height:1.5;margin-bottom:16px;}
+.rq-answer{font-size:0.85rem;opacity:0.85;padding:12px;background:rgba(255,255,255,0.15);border-radius:10px;margin-bottom:16px;display:none;}
+.rq-btn{
+  padding:12px 28px;border-radius:12px;background:#fff;color:#00695c;
+  font-weight:700;border:none;cursor:pointer;font-family:'Poppins',sans-serif;
+  margin:0 6px;font-size:0.85rem;transition:all 0.2s;
+}
+.rq-btn:hover{transform:scale(1.05);}
+
+/* ===== SEARCH ===== */
+.search-wrap{
+  background:var(--card);border-radius:16px;
+  display:flex;align-items:center;gap:10px;padding:12px 16px;
+  margin-bottom:16px;border:1px solid rgba(255,255,255,0.1);
+}
+.search-input{
+  flex:1;background:none;border:none;color:var(--text);
+  font-family:'Poppins',sans-serif;font-size:0.9rem;outline:none;
+}
+.search-input::placeholder{color:var(--text2);}
+
+/* ===== MISC UTILS ===== */
+.btn-back{
+  display:flex;align-items:center;gap:6px;
+  background:var(--bg3);border:1px solid rgba(255,255,255,0.1);
+  color:var(--text);padding:8px 16px;border-radius:10px;
+  cursor:pointer;font-size:0.85rem;margin-bottom:16px;
+  font-family:'Poppins',sans-serif;transition:all 0.2s;
+}
+.btn-back:hover{background:var(--primary);}
+
+.empty-state{text-align:center;padding:40px 20px;color:var(--text2);}
+.empty-state .empty-icon{font-size:3rem;margin-bottom:12px;}
+.empty-state p{font-size:0.85rem;}
+
+.toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:#333;color:#fff;padding:10px 20px;border-radius:50px;
+  font-size:0.85rem;opacity:0;transition:all 0.3s;z-index:1000;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+.bookmark-btn{
+  background:none;border:none;cursor:pointer;font-size:1.2rem;
+  color:var(--text2);transition:transform 0.2s;
+}
+.bookmark-btn.active{color:var(--gold);}
+.bookmark-btn:hover{transform:scale(1.2);}
+
+.bookmarks-section{padding-bottom:80px;}
+.bm-item{
+  background:var(--card);border-radius:14px;padding:14px;margin-bottom:10px;
+  border:1px solid rgba(255,255,255,0.06);cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.bm-item-title{font-size:0.9rem;font-weight:600;}
+.bm-item-sub{font-size:0.75rem;color:var(--text2);}
+
+/* Diagram styles */
+.diagram-wrap{
+  background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.diagram-title{font-weight:700;font-size:0.9rem;margin-bottom:12px;color:var(--accent2);}
+.flow-diagram{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.flow-box{
+  background:var(--primary);color:#fff;
+  border-radius:10px;padding:10px 20px;font-size:0.82rem;font-weight:600;
+  text-align:center;width:100%;max-width:280px;
+}
+.flow-arrow{font-size:1.2rem;color:var(--text2);}
+.flow-row{display:flex;gap:8px;width:100%;justify-content:center;}
+.flow-box.green{background:var(--accent2);}
+.flow-box.orange{background:var(--accent);}
+.flow-box.red{background:var(--accent3);}
+.flow-box.sm{padding:8px 14px;font-size:0.75rem;max-width:none;flex:1;}
+
+/* ===== ANIMATIONS ===== */
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.animate-in{animation:slideUp 0.4s ease forwards;}
+</style>
+</head>
+<body>
+
+<!-- ===== SPLASH SCREEN ===== -->
+<div id="splash">
+  <!-- Globe decorations -->
+  <span class="globe-deco" style="top:5%;left:5%">🌍</span>
+  <span class="globe-deco" style="top:10%;right:8%;animation-delay:1s">🌏</span>
+  <span class="globe-deco" style="bottom:15%;left:10%;animation-delay:2s">🌎</span>
+  <span class="globe-deco" style="bottom:8%;right:5%;animation-delay:0.5s;font-size:6rem">🗺️</span>
+  <span class="globe-deco" style="top:40%;left:2%;font-size:3rem;animation-delay:1.5s">🏛️</span>
+  <span class="globe-deco" style="top:35%;right:2%;font-size:3rem;animation-delay:0.8s">📚</span>
+
+  <div class="splash-content">
+    <div class="splash-badge">JKBOSE Class 10</div>
+    <h1 class="splash-title">Social Science<br><span>Learning App</span></h1>
+    <p class="splash-subtitle">History · Geography · Political Science · Economics</p>
+
+    <div class="author-photo-wrap">
+      <div class="author-glow-ring"></div>
+      <div class="author-photo-inner">
+        <img id="authorPhoto" src="author.jpg" alt="Mateen Yousuf" onerror="this.style.display='none';document.getElementById('authorFallback').style.display='block'">
+        <span id="authorFallback" class="author-placeholder" style="display:none">👨‍🏫</span>
+      </div>
+    </div>
+
+    <div class="author-name">Mateen Yousuf</div>
+    <div class="author-designation">
+      Teacher<br>
+      School Education Department<br>
+      Jammu and Kashmir
+    </div>
+
+    <button class="start-btn" onclick="startApp()">🚀 Start Learning</button>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="app">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-title">📚 SST Class 10</div>
+    <div class="topbar-actions">
+      <button class="icon-btn" onclick="toggleDarkMode()" title="Toggle Theme">🌙</button>
+      <button class="icon-btn" onclick="showPage('random')" title="Random Question">🎲</button>
+      <button class="icon-btn" onclick="resetProgress()" title="Reset">🔄</button>
+    </div>
+  </div>
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="page-home">
+    <div class="home-hero">
+      <div class="home-hero-label">Welcome Back, Student!</div>
+      <h1>Let's Master<br>Social Science 🎓</h1>
+      <p>JKBOSE Class 10 · NEP 2020 Aligned · Interactive Learning</p>
+    </div>
+
+    <div class="progress-overview">
+      <h3>📊 Your Progress</h3>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="overallProgress" style="width:0%"></div>
+      </div>
+      <div class="progress-stats">
+        <div class="stat-chip">
+          <div class="stat-val" id="statChapters">0</div>
+          <div class="stat-label">Chapters Done</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-val" id="statQuizzes">0</div>
+          <div class="stat-label">Quizzes Taken</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-val" id="statScore">0%</div>
+          <div class="stat-label">Avg Score</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">📖 Subjects</div>
+    <div class="subject-grid">
+      <div class="subject-card subj-history" onclick="filterChapters('History')">
+        <span class="subj-icon">🏛️</span>
+        <div class="subj-name">History</div>
+        <div class="subj-count">5 Chapters</div>
+      </div>
+      <div class="subject-card subj-geo" onclick="filterChapters('Geography')">
+        <span class="subj-icon">🗺️</span>
+        <div class="subj-name">Geography</div>
+        <div class="subj-count">7 Chapters</div>
+      </div>
+      <div class="subject-card subj-pols" onclick="filterChapters('Political Science')">
+        <span class="subj-icon">⚖️</span>
+        <div class="subj-name">Political Science</div>
+        <div class="subj-count">8 Chapters</div>
+      </div>
+      <div class="subject-card subj-eco" onclick="filterChapters('Economics')">
+        <span class="subj-icon">💹</span>
+        <div class="subj-name">Economics</div>
+        <div class="subj-count">5 Chapters</div>
+      </div>
+    </div>
+
+    <div class="section-title">⚡ Quick Access</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="subject-card" style="background:linear-gradient(135deg,#1a237e,#311b92)" onclick="showPage('quiz')">
+        <span class="subj-icon">❓</span>
+        <div class="subj-name">Quiz Mode</div>
+      </div>
+      <div class="subject-card" style="background:linear-gradient(135deg,#4a148c,#6a1b9a)" onclick="showPage('notes')">
+        <span class="subj-icon">📝</span>
+        <div class="subj-name">My Notes</div>
+      </div>
+      <div class="subject-card" style="background:linear-gradient(135deg,#b71c1c,#c62828)" onclick="showPage('bookmarks')">
+        <span class="subj-icon">🔖</span>
+        <div class="subj-name">Bookmarks</div>
+      </div>
+      <div class="subject-card" style="background:linear-gradient(135deg,#004d40,#00695c)" onclick="showPage('progress')">
+        <span class="subj-icon">🏆</span>
+        <div class="subj-name">Progress</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAPTERS PAGE -->
+  <div class="page" id="page-chapters">
+    <div class="search-wrap">
+      <span>🔍</span>
+      <input class="search-input" placeholder="Search chapters..." oninput="searchChapters(this.value)" id="chapterSearch">
+    </div>
+    <div class="chapter-filters" id="chapterFilters">
+      <div class="filter-chip active" onclick="filterChapters('All',this)">All</div>
+      <div class="filter-chip" onclick="filterChapters('History',this)">🏛️ History</div>
+      <div class="filter-chip" onclick="filterChapters('Geography',this)">🗺️ Geography</div>
+      <div class="filter-chip" onclick="filterChapters('Political Science',this)">⚖️ Pol. Science</div>
+      <div class="filter-chip" onclick="filterChapters('Economics',this)">💹 Economics</div>
+    </div>
+    <div class="chapter-list" id="chapterList"></div>
+  </div>
+
+  <!-- CHAPTER DETAIL -->
+  <div class="page" id="page-chapter-detail">
+    <button class="btn-back" onclick="closeChapterDetail()">← Back to Chapters</button>
+    <div id="chapterDetailContent"></div>
+  </div>
+
+  <!-- QUIZ PAGE -->
+  <div class="page" id="page-quiz">
+    <div class="quiz-page-header">
+      <span class="qph-icon">🧠</span>
+      <div>
+        <h2>Quiz Mode</h2>
+        <p>Test your knowledge chapter by chapter</p>
+      </div>
+    </div>
+    <div id="quizChapterList"></div>
+  </div>
+
+  <!-- PROGRESS PAGE -->
+  <div class="page" id="page-progress">
+    <div class="progress-header">
+      <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:4px;">🏆 Your Achievements</h2>
+      <p style="font-size:0.8rem;opacity:0.8">Track your learning journey</p>
+    </div>
+    <div class="progress-grid">
+      <div class="prog-stat-card">
+        <div class="prog-stat-val" style="color:var(--gold);" id="pg-chapters">0/25</div>
+        <div class="prog-stat-label">Chapters Completed</div>
+      </div>
+      <div class="prog-stat-card">
+        <div class="prog-stat-val" style="color:#64b5f6;" id="pg-quizzes">0</div>
+        <div class="prog-stat-label">Quizzes Taken</div>
+      </div>
+      <div class="prog-stat-card">
+        <div class="prog-stat-val" style="color:var(--green);" id="pg-avg">0%</div>
+        <div class="prog-stat-label">Average Score</div>
+      </div>
+      <div class="prog-stat-card">
+        <div class="prog-stat-val" style="color:#ce93d8;" id="pg-notes">0</div>
+        <div class="prog-stat-label">Notes Saved</div>
+      </div>
+    </div>
+    <div class="section-title">🏅 Badges</div>
+    <div class="badge-grid" id="badgeGrid"></div>
+  </div>
+
+  <!-- NOTES PAGE -->
+  <div class="page" id="page-notes">
+    <div class="notes-header">
+      <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:4px;">📝 My Notes</h2>
+      <p style="font-size:0.8rem;opacity:0.8">Write and save your study notes</p>
+    </div>
+    <div class="note-input-wrap">
+      <select id="noteChapterSelect" style="width:100%;padding:10px;border-radius:10px;background:var(--bg3);color:var(--text);border:1px solid rgba(255,255,255,0.1);font-family:'Poppins',sans-serif;margin-bottom:10px;font-size:0.85rem;">
+        <option value="">Select Chapter</option>
+      </select>
+      <textarea class="note-textarea" id="noteInput" placeholder="Type your notes here..."></textarea>
+      <button class="note-save-btn" onclick="saveNote()">💾 Save Note</button>
+    </div>
+    <div class="saved-notes" id="savedNotes"></div>
+  </div>
+
+  <!-- BOOKMARKS PAGE -->
+  <div class="page" id="page-bookmarks">
+    <div style="background:linear-gradient(135deg,#b71c1c,#c62828);border-radius:20px;padding:20px;margin-bottom:16px;color:#fff;">
+      <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:4px;">🔖 Bookmarks</h2>
+      <p style="font-size:0.8rem;opacity:0.8">Your saved concepts and chapters</p>
+    </div>
+    <div class="bookmarks-section" id="bookmarksList"></div>
+  </div>
+
+  <!-- RANDOM QUESTION PAGE -->
+  <div class="page" id="page-random">
+    <div class="rq-wrap">
+      <div style="font-size:0.8rem;opacity:0.7;margin-bottom:8px;letter-spacing:1px;text-transform:uppercase;">Random Question Generator</div>
+      <div class="rq-question" id="rqQuestion">Press "New Question" to start!</div>
+      <div class="rq-answer" id="rqAnswer"></div>
+      <button class="rq-btn" onclick="newRandomQuestion()">🎲 New Question</button>
+      <button class="rq-btn" id="rqRevealBtn" onclick="revealAnswer()" style="background:rgba(255,255,255,0.2);color:#fff;">👁️ Show Answer</button>
+    </div>
+    <div style="background:var(--card);border-radius:16px;padding:16px;border:1px solid rgba(255,255,255,0.06);">
+      <div class="section-title">💡 How to Use</div>
+      <p style="font-size:0.85rem;color:var(--text2);line-height:1.7;">
+        1. Press "New Question" to get a random question from any chapter.<br>
+        2. Think about your answer.<br>
+        3. Press "Show Answer" to check.<br>
+        4. This helps with last-minute revision!
+      </p>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="showPage('home')" id="nav-home">
+      <span class="nav-icon">🏠</span>
+      <span>Home</span>
+    </button>
+    <button class="nav-item" onclick="showPage('chapters')" id="nav-chapters">
+      <span class="nav-icon">📖</span>
+      <span>Chapters</span>
+    </button>
+    <button class="nav-item" onclick="showPage('quiz')" id="nav-quiz">
+      <span class="nav-icon">🧠</span>
+      <span>Quiz</span>
+    </button>
+    <button class="nav-item" onclick="showPage('progress')" id="nav-progress">
+      <span class="nav-icon">📊</span>
+      <span>Progress</span>
+    </button>
+    <button class="nav-item" onclick="showPage('notes')" id="nav-notes">
+      <span class="nav-icon">📝</span>
+      <span>Notes</span>
+    </button>
+  </nav>
+
+</div><!-- end #app -->
+
+<script>
+// ===================================================
+// JKBOSE CLASS 10 SOCIAL SCIENCE APP
+// Author: Mateen Yousuf
+// ===================================================
+
+// ===== CHAPTER DATA =====
+const CHAPTERS = [
+  // ---- HISTORY ----
+  {
+    id: 'h1', subject: 'History', icon: '🏛️',
+    title: 'The Rise of Nationalism in Europe',
+    color: '#b71c1c',
+    concept: `Nationalism emerged in Europe during the 19th century as a powerful force that led to the creation of nation-states. The French Revolution and Napoleonic Wars spread ideas of liberty, equality, and nationalism across Europe. By the mid-19th century, educated middle classes demanded democratic constitutions and nation-states.`,
+    keyPoints: [
+      'Frederic Sorrieu\'s utopian vision of a world of democratic republics',
+      'French Revolution and rise of Napoleon spread nationalist ideas',
+      'Romanticism gave cultural expression to nationalist feelings',
+      'Unification of Germany under Bismarck (1866-71)',
+      'Unification of Italy through Mazzini, Garibaldi, Cavour',
+      'Balkans: emergence of nationalism in multi-ethnic empires'
+    ],
+    timeline: [
+      {year:'1789',event:'French Revolution begins; spread of nationalist ideas'},
+      {year:'1815',event:'Congress of Vienna; conservative order restored'},
+      {year:'1830',event:'Revolts in France, Belgium, Poland, Germany'},
+      {year:'1848',event:'Year of Revolutions; Frankfurt Parliament'},
+      {year:'1861',event:'Unification of Italy completed'},
+      {year:'1871',event:'Unification of Germany; German Empire proclaimed'},
+    ],
+    flashcards: [
+      {q:'What is a nation-state?',a:'A state whose territorial boundaries coincide with the cultural and linguistic unity of its people.'},
+      {q:'Who painted "The Dream of Worldwide Democratic and Social Republics"?',a:'Frederic Sorrieu, a French artist, in 1848.'},
+      {q:'What is Romanticism?',a:'A cultural movement that gave shape to nationalist feelings through art, poetry, stories, and music.'},
+      {q:'Who was Bismarck?',a:'Chief Minister of Prussia who led the unification of Germany through "blood and iron" policy.'},
+      {q:'What was the Frankfurt Parliament?',a:'An elected assembly that met in Frankfurt in 1848 to draft a constitution for a united Germany.'},
+    ],
+    quiz: [
+      {q:'Which revolution spread the ideas of liberty and nationalism across Europe?',opts:['American Revolution','French Revolution','Russian Revolution','Industrial Revolution'],ans:1},
+      {q:'Who is considered the "voice of God" in Italian unification?',opts:['Cavour','Bismarck','Garibaldi','Mazzini'],ans:3},
+      {q:'The concept of "la patrie" refers to:',opts:['The King','The Fatherland/homeland','The Church','The Army'],ans:1},
+      {q:'Which treaty established the conservative order after Napoleon?',opts:['Treaty of Vienna','Treaty of Versailles','Treaty of Paris','Treaty of Westphalia'],ans:0},
+      {q:'Romanticism as a movement primarily aimed to:',opts:['Promote science','Foster nationalist feelings through culture','Strengthen monarchy','Promote industrialization'],ans:1},
+    ],
+    reasoning: [
+      {q:'Why did the artists and poets of the Romantic era play an important role in developing nationalism?',hint:'Think about how culture shapes identity...'},
+      {q:'Compare the methods used by Bismarck and Garibaldi to achieve national unification.'},
+    ],
+    competency: 'Analyze a political cartoon from the 1848 revolution. What symbols of nationalism can you identify? How do these symbols reflect the aspirations of the people?',
+    activity: 'Create a timeline of key events in European nationalism from 1789 to 1871 using the dates provided.',
+    mapInfo: 'Pre-unification Germany had 39 states. Trace the boundaries on the map and identify how they changed after 1871.',
+    simulation: 'nationalismSimulation'
+  },
+
+  {
+    id: 'h2', subject: 'History', icon: '🌿',
+    title: 'Nationalism in India',
+    color: '#c62828',
+    concept: `The Indian national movement grew out of resistance to British colonial rule. The Indian National Congress was founded in 1885. Under Mahatma Gandhi, the movement became a mass movement involving millions of people through non-violent methods like Non-Cooperation, Civil Disobedience, and Quit India movements.`,
+    keyPoints: [
+      'INC founded 1885; early phase: moderate leaders',
+      'Partition of Bengal 1905 — Swadeshi movement',
+      'Non-Cooperation Movement 1920-22 — Rowlatt Act, Jallianwala Bagh',
+      'Civil Disobedience Movement 1930 — Dandi March (Salt Satyagraha)',
+      'Quit India Movement 1942 — "Do or Die"',
+      'Role of different groups: peasants, tribals, women, business class'
+    ],
+    timeline: [
+      {year:'1885',event:'Indian National Congress founded by A.O. Hume'},
+      {year:'1905',event:'Partition of Bengal; Swadeshi Movement begins'},
+      {year:'1915',event:'Gandhi returns from South Africa'},
+      {year:'1919',event:'Rowlatt Act; Jallianwala Bagh Massacre'},
+      {year:'1920',event:'Non-Cooperation Movement launched'},
+      {year:'1930',event:'Civil Disobedience Movement; Dandi March'},
+      {year:'1942',event:'Quit India Movement; "Do or Die" slogan'},
+      {year:'1947',event:'Independence; Partition of India'},
+    ],
+    flashcards: [
+      {q:'What was the Rowlatt Act?',a:'1919 Act that allowed detention without trial, causing mass anger and launching the Non-Cooperation Movement.'},
+      {q:'What was the Dandi March?',a:'Gandhi\'s 240-mile march to Dandi to make salt illegally, defying the British salt tax — 12th March 1930.'},
+      {q:'Who wrote "Vande Mataram"?',a:'Bankim Chandra Chattopadhyay, in his novel Anandamath (1882).'},
+      {q:'What is Satyagraha?',a:'Non-violent resistance or "truth-force" developed by Gandhi — asserting truth and justice without violence.'},
+      {q:'What happened at Chauri Chaura?',a:'In 1922, a violent clash at Chauri Chaura led Gandhi to suspend the Non-Cooperation Movement.'},
+    ],
+    quiz: [
+      {q:'The Indian National Congress was founded in which year?',opts:['1857','1885','1905','1920'],ans:1},
+      {q:'The Dandi March targeted which colonial law?',opts:['Rowlatt Act','Salt Law','Arms Act','Press Act'],ans:1},
+      {q:'Who led the Non-Cooperation Movement?',opts:['Nehru','Bose','Gandhi','Tilak'],ans:2},
+      {q:'Which event led Gandhi to suspend the Non-Cooperation Movement?',opts:['Jallianwala Bagh','Chauri Chaura','Dandi March','Partition of Bengal'],ans:1},
+      {q:'"Do or Die" slogan was given during:',opts:['Non-Cooperation Movement','Civil Disobedience Movement','Quit India Movement','Swadeshi Movement'],ans:2},
+    ],
+    reasoning: [
+      {q:'Why did Gandhi choose salt as the symbol of protest? What made it an effective tool?'},
+      {q:'How did different sections of society (peasants, women, merchants) participate in the national movement differently?'},
+    ],
+    competency: 'The British called the Indian independence movement "sedition." Indians called it their right. Whose perspective is more historically justified? Write your argument with evidence.',
+    activity: 'Role-play: You are a participant in the Salt March. Write a diary entry describing your feelings and motivations.',
+    mapInfo: 'Trace the Dandi March route on a map of Gujarat. How far did Gandhi and his followers walk?',
+    simulation: 'nationalMovementTimeline'
+  },
+
+  {
+    id: 'h3', subject: 'History', icon: '🌾',
+    title: 'The Making of a Global World',
+    color: '#d32f2f',
+    concept: `The modern world is connected through trade, migration, and the exchange of ideas — a process called globalization. Pre-modern worlds were linked through silk routes, disease, and conquest. 19th century saw mass migration, trade, and capital flows. 20th century brought the Great Depression, World Wars, and eventually post-war international institutions.`,
+    keyPoints: [
+      'Silk Routes connected Asia, Africa and Europe in ancient times',
+      'Americas "discovered" 1492; European diseases killed millions',
+      '19th century: corn laws abolished; food trade; indentured labour',
+      'Great Depression 1929 — collapse of trade and employment',
+      'Post-WWII: Bretton Woods institutions (IMF, World Bank)',
+      'Decolonization and development in newly independent nations'
+    ],
+    timeline: [
+      {year:'1492',event:'Columbus reaches Americas; Columbian exchange begins'},
+      {year:'1840s',event:'Corn Laws repealed in Britain; global food trade expands'},
+      {year:'1890s',event:'Mass migration to Americas; indentured labour system'},
+      {year:'1914',event:'World War I; disruption of global trade'},
+      {year:'1929',event:'Great Depression; global economic collapse'},
+      {year:'1944',event:'Bretton Woods Conference; IMF and World Bank created'},
+      {year:'1947',event:'GATT established; post-war trade order'},
+    ],
+    flashcards: [
+      {q:'What were the Silk Routes?',a:'Ancient trade routes connecting Asia with Europe and Africa, used for trade in silk, spices, and ideas.'},
+      {q:'What was the Corn Law?',a:'British law taxing imported grain. Its abolition led to cheap food imports and expansion of global food trade.'},
+      {q:'What was indentured labour?',a:'A system where poor workers signed contracts to work abroad, often in harsh conditions on plantations.'},
+      {q:'What caused the Great Depression?',a:'Stock market crash in 1929 caused banks to fail, unemployment to rise, and world trade to collapse.'},
+      {q:'What were the Bretton Woods institutions?',a:'IMF (International Monetary Fund) and World Bank — created after WWII to manage global economy and aid reconstruction.'},
+    ],
+    quiz: [
+      {q:'Which routes connected Asia and Europe in ancient times?',opts:['Spice Routes','Silk Routes','Trade Winds Route','Maritime Route'],ans:1},
+      {q:'The Great Depression began with:',opts:['World War I','Stock Market crash 1929','Corn Law abolition','Bretton Woods Conference'],ans:1},
+      {q:'Indentured labour primarily went to work in:',opts:['Europe','China','Plantations in Caribbean and Fiji','Russia'],ans:2},
+      {q:'IMF stands for:',opts:['Indian Monetary Fund','International Monetary Fund','Internal Market Fund','International Market Forum'],ans:1},
+      {q:'The Columbian exchange refers to:',opts:['Columbus\'s trade deals','Exchange of diseases, plants, animals between Americas and Europe','Columbus\'s maps','Spanish gold trade'],ans:1},
+    ],
+    reasoning: [
+      {q:'How did the abolition of Corn Laws benefit Britain but harm other countries? Analyze the global impact.'},
+      {q:'The Great Depression affected countries that had nothing to do with America\'s stock market. How and why?'},
+    ],
+    competency: 'Study a graph showing world trade between 1870 and 1950. Identify the periods of growth and decline and explain the reasons for each trend.',
+    activity: 'Map exercise: Draw the major Silk Routes and mark the goods traded at each major city.',
+    mapInfo: 'Mark the trade routes connecting India to Europe, Africa and Southeast Asia.',
+    simulation: 'tradeRouteSimulation'
+  },
+
+  {
+    id: 'h4', subject: 'History', icon: '⚙️',
+    title: 'The Age of Industrialization',
+    color: '#e53935',
+    concept: `Industrialization began in Britain in the 18th century and spread globally. It transformed production through new machinery, factories, and technology. However, industrialization also led to exploitation of workers, child labor, and environmental damage. India's traditional textile industry was affected by British industrial policies.`,
+    keyPoints: [
+      'Proto-industrialization preceded factories in Europe',
+      'First factories appeared in Britain in 1730s-1740s',
+      'New inventions: steam engine, spinning jenny, power loom',
+      'Working class conditions: long hours, low pay, child labour',
+      'India: handloom vs. industrial cloth; Swadeshi movement',
+      'Impact on Indian artisans — decline of traditional industries'
+    ],
+    timeline: [
+      {year:'1730s',event:'First factories established in Britain'},
+      {year:'1764',event:'Spinning Jenny invented by James Hargreaves'},
+      {year:'1769',event:'Steam engine improved by James Watt'},
+      {year:'1850s',event:'Railways spread across Britain and India'},
+      {year:'1860s',event:'Cotton mills established in Bombay (India)'},
+      {year:'1905',event:'Swadeshi movement promotes Indian goods'},
+    ],
+    flashcards: [
+      {q:'What was proto-industrialization?',a:'A phase before factories where merchants gave raw materials to rural workers to produce goods at home.'},
+      {q:'What was the Spinning Jenny?',a:'A machine invented by James Hargreaves (1764) that allowed one worker to spin multiple threads simultaneously.'},
+      {q:'What were "spongers" and "bleachers" in early factories?',a:'Workers who performed specialized tasks in textile processing before mechanization made their skills obsolete.'},
+      {q:'How did British rule affect Indian weavers?',a:'Cheap British machine-made cloth flooded Indian markets, ruining traditional weavers and artisans.'},
+      {q:'What was the Swadeshi movement in economic terms?',a:'A movement to boycott British goods and promote Indian-made products to revive Indian industries.'},
+    ],
+    quiz: [
+      {q:'The first factories in Britain appeared in which decade?',opts:['1690s','1730s','1790s','1820s'],ans:1},
+      {q:'Who improved the steam engine in 1769?',opts:['Newton','Faraday','James Watt','Hargreaves'],ans:2},
+      {q:'Indian textile industry was most harmed by:',opts:['Local competition','Cheap British cloth imports','Wars','Droughts'],ans:1},
+      {q:'Spinning Jenny was invented by:',opts:['James Watt','James Hargreaves','Robert Owen','George Stephenson'],ans:1},
+      {q:'The Bombay cotton mills primarily employed:',opts:['British workers','Skilled weavers','Poor migrants from rural areas','Only women'],ans:2},
+    ],
+    reasoning: [
+      {q:'Why did industrialization first happen in Britain and not in France, Germany or India?'},
+      {q:'How did industrialization lead to both prosperity and suffering simultaneously?'},
+    ],
+    competency: 'Compare the working conditions of a factory worker in 19th-century Britain with those of an Indian handloom weaver. Whose situation was more difficult and why?',
+    activity: 'Draw a timeline of inventions during the Industrial Revolution and explain how each one changed production.',
+    mapInfo: 'Mark the major industrial cities of Britain (Manchester, Birmingham, Leeds) and India\'s textile centers (Mumbai, Ahmedabad, Surat).',
+    simulation: 'industrialRevolution'
+  },
+
+  {
+    id: 'h5', subject: 'History', icon: '📰',
+    title: 'Print Culture and the Modern World',
+    color: '#ef5350',
+    concept: `The printing press transformed society by making books affordable and spreading ideas rapidly. Johannes Gutenberg developed the first mechanical printing press in Europe in the 1440s. Print culture helped spread Reformation ideas, nationalism, and eventually democracy. In India, printing presses helped spread education and nationalist ideas.`,
+    keyPoints: [
+      'Woodblock printing in China from 594 AD',
+      'Gutenberg\'s printing press (1448) in Mainz, Germany',
+      'Protestant Reformation — Luther\'s theses spread via print',
+      'Chapbooks, ballads made reading accessible to poor',
+      '19th century: Vernacular press in India; Bengal, Tamil Nadu',
+      'Print and nationalism: newspapers spread nationalist ideas'
+    ],
+    timeline: [
+      {year:'594 AD',event:'Woodblock printing begins in China under Tang dynasty'},
+      {year:'1448',event:'Gutenberg\'s printing press developed in Mainz'},
+      {year:'1517',event:'Martin Luther\'s 95 Theses printed and spread across Europe'},
+      {year:'1780',event:'First newspaper in India: Bengal Gazette'},
+      {year:'1878',event:'Vernacular Press Act restricts Indian language newspapers'},
+      {year:'1905',event:'Nationalist newspapers play key role in Swadeshi movement'},
+    ],
+    flashcards: [
+      {q:'Who developed the first mechanical printing press in Europe?',a:'Johannes Gutenberg in Mainz, Germany around 1448, using a screw press design.'},
+      {q:'What was the significance of Luther\'s 95 Theses?',a:'Printed and distributed, they launched the Protestant Reformation challenging the Catholic Church\'s authority.'},
+      {q:'What were "Chapbooks"?',a:'Cheap, small books sold by peddlers to ordinary people, making printed material accessible to the poor.'},
+      {q:'What was the Vernacular Press Act (1878)?',a:'A British law that allowed the government to confiscate printing equipment of newspapers critical of the colonial government.'},
+      {q:'Who published "Darpan" and "Kesari"?',a:'"Darpan" was by Bal Shastri Jambhekar; "Kesari" was by Bal Gangadhar Tilak — both nationalist newspapers.'},
+    ],
+    quiz: [
+      {q:'Gutenberg\'s printing press was developed around:',opts:['1248','1348','1448','1548'],ans:2},
+      {q:'Woodblock printing first developed in:',opts:['India','Japan','China','Europe'],ans:2},
+      {q:'The Vernacular Press Act (1878) was passed to:',opts:['Promote Indian newspapers','Restrict critical Indian language press','Spread English','Encourage printing'],ans:1},
+      {q:'Who wrote "Kesari" — a nationalist Marathi newspaper?',opts:['Gandhi','Tilak','Nehru','Gokhale'],ans:1},
+      {q:'The Protestant Reformation was helped by the printing press because:',opts:['Luther was a printer','Luther\'s ideas spread rapidly through printed texts','The Pope controlled print','Churches funded printing'],ans:1},
+    ],
+    reasoning: [
+      {q:'How did the printing press both unite and divide society? Give examples from European history.'},
+      {q:'Why did the British government fear the vernacular press in India? Was their concern justified?'},
+    ],
+    competency: 'Imagine you are a reformer in 16th-century Europe or 19th-century India. Write a pamphlet (short statement) that you would print and distribute to spread your ideas.',
+    activity: 'Compare the role of social media today with that of the printing press in the 15th century.',
+    mapInfo: 'Mark major printing centers in 15th-century Europe and 19th-century India.',
+    simulation: 'printSpreadSimulation'
+  },
+
+  // ---- GEOGRAPHY ----
+  {
+    id: 'g1', subject: 'Geography', icon: '🌱',
+    title: 'Resources and Development',
+    color: '#1b5e20',
+    concept: `Resources are anything that can be used to satisfy human needs. Resources can be natural (air, water, minerals) or human-made. They can be renewable (solar, wind) or non-renewable (coal, petroleum). Sustainable development means using resources to meet present needs without compromising future generations' ability to meet their needs.`,
+    keyPoints: [
+      'Types of resources: Natural, Human, Human-made',
+      'Renewable vs. Non-renewable resources',
+      'Resource planning — essential for equitable distribution',
+      'Land degradation causes: deforestation, overgrazing, mining',
+      'Soil types in India: Alluvial, Black, Red, Laterite, Arid',
+      'Soil erosion: sheet erosion, gully erosion, wind erosion'
+    ],
+    timeline: [
+      {year:'1987',event:'Brundtland Commission defines Sustainable Development'},
+      {year:'1992',event:'Earth Summit, Rio de Janeiro — Agenda 21'},
+      {year:'2002',event:'World Summit on Sustainable Development, Johannesburg'},
+      {year:'2015',event:'UN Sustainable Development Goals (SDGs) adopted'},
+      {year:'2030',event:'Target year for achieving all 17 SDGs'},
+    ],
+    flashcards: [
+      {q:'What is sustainable development?',a:'"Development that meets the needs of the present without compromising the ability of future generations to meet their own needs." — Brundtland Report 1987'},
+      {q:'What are alluvial soils?',a:'Soils deposited by rivers in their plains. Very fertile, cover most of the northern plains. Rich in potash, phosphoric acid.'},
+      {q:'What is gully erosion?',a:'Running water cuts through soft soil forming deep channels called gullies, making land unfit for cultivation. Creates "badlands."'},
+      {q:'What is resource planning?',a:'The process of wisely managing resources to ensure equitable distribution and sustainable use across regions and generations.'},
+      {q:'What are black soils?',a:'Also called Regur soils; ideal for cotton cultivation; found in Deccan plateau; retain moisture; rich in calcium carbonate.'},
+    ],
+    quiz: [
+      {q:'Which type of soil is best for cotton cultivation?',opts:['Alluvial','Black/Regur','Red','Laterite'],ans:1},
+      {q:'Sustainable development concept was defined by:',opts:['United Nations','Brundtland Commission','World Bank','UNEP'],ans:1},
+      {q:'Badlands of Chambal Valley are formed by:',opts:['Wind erosion','Sheet erosion','Gully erosion','Waterlogging'],ans:2},
+      {q:'Which soil is most fertile in India?',opts:['Laterite','Black','Alluvial','Arid'],ans:2},
+      {q:'Which of the following is a renewable resource?',opts:['Coal','Petroleum','Solar energy','Natural gas'],ans:2},
+    ],
+    reasoning: [
+      {q:'India has plenty of resources yet remains underdeveloped. How does unequal resource distribution explain this paradox?'},
+      {q:'How can soil conservation practices help in reducing poverty among farmers?'},
+    ],
+    competency: 'Study a map showing soil types of India. Identify which type of soil is found in your region and explain how farmers use it effectively.',
+    activity: 'Collect samples of different soils from your area and observe their color, texture, and water retention capacity.',
+    mapInfo: 'India Soil Map: Match regions with their soil types. Alluvial soils in Indo-Gangetic plains; Black soils in Deccan; Red soils in Peninsular India.',
+    simulation: 'soilMapSimulation'
+  },
+
+  {
+    id: 'g2', subject: 'Geography', icon: '🌾',
+    title: 'Agriculture',
+    color: '#2e7d32',
+    concept: `Agriculture is the backbone of India's economy and employs about 60% of the workforce. India practices different types of farming based on soil, climate, and irrigation facilities. Major crops include rice, wheat, cotton, jute, tea, and coffee. The Green Revolution transformed Indian agriculture in the 1960s-70s.`,
+    keyPoints: [
+      'Types: Subsistence, Commercial, Plantation, Shifting cultivation',
+      'Cropping seasons: Kharif (June-Sept), Rabi (Nov-April)',
+      'Green Revolution: HYV seeds, fertilizers, irrigation',
+      'Major food crops: Rice (E. India), Wheat (N.W. India)',
+      'Cash crops: Cotton, Jute, Sugarcane, Oilseeds',
+      'Plantation crops: Tea (Assam), Coffee (Karnataka), Rubber (Kerala)'
+    ],
+    timeline: [
+      {year:'1960s',event:'Green Revolution begins with HYV seeds'},
+      {year:'1966-67',event:'First HYV wheat harvest; Punjab leads'},
+      {year:'1970s',event:'Green Revolution expands to rice cultivation'},
+      {year:'1988',event:'Technology Mission on Oilseeds launched'},
+      {year:'2004',event:'National Horticulture Mission launched'},
+    ],
+    flashcards: [
+      {q:'What is Kharif season?',a:'Crops sown with monsoon onset (June) and harvested by September-October. Examples: Rice, Maize, Cotton, Jute.'},
+      {q:'What is Rabi season?',a:'Crops sown in winter (November) and harvested in spring (April). Examples: Wheat, Barley, Peas, Mustard.'},
+      {q:'What was the Green Revolution?',a:'Introduction of HYV (High Yielding Variety) seeds, chemical fertilizers, and irrigation in 1960s-70s, dramatically increasing food production.'},
+      {q:'Which state is the largest producer of rice in India?',a:'West Bengal is the largest producer of rice in India.'},
+      {q:'What is shifting cultivation?',a:'A type of farming where forest land is cleared, farmed for a few years, then abandoned to regenerate. Called "Jhumming" in Northeast India.'},
+    ],
+    quiz: [
+      {q:'Rice production is highest in which region of India?',opts:['Punjab','Rajasthan','Eastern India (West Bengal)','Gujarat'],ans:2},
+      {q:'Which crop is grown in both Kharif and Rabi seasons?',opts:['Rice','Cotton','Maize','Wheat'],ans:0},
+      {q:'The Green Revolution was primarily associated with:',opts:['Sugarcane','HYV wheat and rice','Cotton','Jute'],ans:1},
+      {q:'Jhumming is a type of:',opts:['Commercial farming','Plantation farming','Shifting cultivation','Intensive farming'],ans:2},
+      {q:'Tea is mainly grown in:',opts:['Rajasthan','Assam and Darjeeling','Gujarat','Haryana'],ans:1},
+    ],
+    reasoning: [
+      {q:'The Green Revolution increased food production but also created new problems. Identify both the benefits and drawbacks.'},
+      {q:'Why is agriculture still important in India despite the growth of industry and services?'},
+    ],
+    competency: 'Compare the cropping pattern of Punjab (wheat-dominant) with Kerala (plantation crops). How do climate and economy explain these differences?',
+    activity: 'Create a crop calendar showing when major Indian crops are sown and harvested throughout the year.',
+    mapInfo: 'Mark the major crop-producing regions of India: Rice (Eastern), Wheat (Northwest), Cotton (Deccan), Tea (Northeast and Nilgiris).',
+    simulation: 'cropMapSimulation'
+  },
+
+  {
+    id: 'g3', subject: 'Geography', icon: '⛏️',
+    title: 'Minerals and Energy Resources',
+    color: '#33691e',
+    concept: `Minerals are naturally occurring substances with definite chemical composition. India is rich in mineral resources. Energy resources include conventional (coal, petroleum, natural gas) and non-conventional sources (solar, wind, tidal, biogas). Sustainable use of mineral resources is essential for future generations.`,
+    keyPoints: [
+      'Ferrous minerals: Iron ore, Manganese (metallic, contain iron)',
+      'Non-ferrous minerals: Copper, Bauxite, Lead, Zinc',
+      'Non-metallic minerals: Mica, Limestone, Rock salt',
+      'Conventional energy: Coal (Jharia, Raniganj), Petroleum (Mumbai High)',
+      'Non-conventional: Solar (Rajasthan), Wind (Tamil Nadu, Gujarat)',
+      'Nuclear energy: Thorium reserves in India'
+    ],
+    timeline: [
+      {year:'1774',event:'Coal mining begins at Raniganj, Bengal'},
+      {year:'1956',event:'Oil discovered at Naharkatia, Assam'},
+      {year:'1974',event:'Mumbai High offshore oil field discovered'},
+      {year:'2010',event:'India\'s solar mission launched'},
+      {year:'2022',event:'India targets 500 GW renewable energy by 2030'},
+    ],
+    flashcards: [
+      {q:'What are ferrous minerals?',a:'Minerals that contain iron. Examples: Iron ore, Manganese, Nickel, Cobalt. India produces 25% of world\'s iron ore.'},
+      {q:'What is bauxite?',a:'Non-ferrous ore used to produce aluminium. Found in Odisha, Gujarat, Jharkhand. Lightweight, strong metal.'},
+      {q:'What is mica?',a:'Non-metallic mineral used in electrical and electronics industries. India is the world\'s largest producer of mica.'},
+      {q:'What is Mumbai High?',a:'An offshore oil field in the Arabian Sea, discovered in 1974. India\'s largest source of crude petroleum.'},
+      {q:'What is biogas?',a:'Gas produced by decomposition of organic waste (cattle dung, crop waste). Used for cooking and lighting in rural areas.'},
+    ],
+    quiz: [
+      {q:'India\'s largest reserves of iron ore are in:',opts:['Rajasthan','Odisha and Jharkhand','Gujarat','Punjab'],ans:1},
+      {q:'Mica is used primarily in:',opts:['Construction','Electrical and electronics','Cooking','Medicine'],ans:1},
+      {q:'Mumbai High is associated with:',opts:['Iron ore','Coal','Petroleum','Mica'],ans:2},
+      {q:'Wind energy potential is highest in which states?',opts:['UP and Bihar','Gujarat and Tamil Nadu','MP and Rajasthan','Assam and Bengal'],ans:1},
+      {q:'Coal is a:',opts:['Renewable resource','Non-renewable resource','Human-made resource','Biotic resource'],ans:1},
+    ],
+    reasoning: [
+      {q:'Why should we develop non-conventional energy sources even though we still have coal and petroleum reserves?'},
+      {q:'How does over-mining of minerals create problems for the environment and economy?'},
+    ],
+    competency: 'India has abundant solar energy potential but still relies heavily on coal. Design a 10-year plan to transition India towards renewable energy.',
+    activity: 'Research and compare the per capita energy consumption of India with USA and China. What conclusions can you draw?',
+    mapInfo: 'Mark India\'s mineral map: Iron ore in Odisha, Coal in Jharkhand, Petroleum in Gujarat and Mumbai High, Mica in Jharkhand.',
+    simulation: 'mineralMapSimulation'
+  },
+
+  {
+    id: 'g4', subject: 'Geography', icon: '🏭',
+    title: 'Manufacturing Industries',
+    color: '#558b2f',
+    concept: `Industries convert raw materials into finished goods, creating employment and driving economic growth. India has a diverse industrial base including textiles, iron and steel, chemicals, and IT. Industrial location depends on raw materials, power, labour, markets, and transport.`,
+    keyPoints: [
+      'Manufacturing converts raw materials into value-added products',
+      'Iron and Steel: backbone of industrial development',
+      'Cotton textile: largest industry; Mumbai-Ahmedabad belt',
+      'Sugar industry: UP and Bihar (north); Maharashtra (south)',
+      'Chemical industry: petrochemicals, fertilizers, pharmaceuticals',
+      'IT and Electronics: Bangalore, Hyderabad, Chennai (Silicon Valley of India)'
+    ],
+    timeline: [
+      {year:'1854',event:'First cotton textile mill established in Mumbai'},
+      {year:'1907',event:'Tata Iron and Steel Company (TISCO) founded at Jamshedpur'},
+      {year:'1948',event:'India\'s first steel plant at Bhilai (Indo-Soviet collaboration)'},
+      {year:'1970s',event:'Green Revolution supports agro-based industries'},
+      {year:'1990s',event:'IT boom; Bangalore becomes India\'s Silicon Valley'},
+    ],
+    flashcards: [
+      {q:'What is agglomeration economy?',a:'When industries group together to share infrastructure and services, reducing production costs. Example: auto industry clusters in Pune.'},
+      {q:'Why is TISCO at Jamshedpur?',a:'Near coal (Jharia), iron ore (Singhbhum), water (Subarnarekha river), and good railway connectivity.'},
+      {q:'What is the "Manchester of India"?',a:'Ahmedabad — historically a major cotton textile center.'},
+      {q:'What is the Silicon Valley of India?',a:'Bangalore (Bengaluru) — India\'s leading IT hub with companies like Infosys, Wipro, ISRO.'},
+      {q:'What are sunrise industries?',a:'New and emerging industries like IT, electronics, solar energy that have high growth potential for the future.'},
+    ],
+    quiz: [
+      {q:'The first iron and steel plant in India was set up at:',opts:['Bhilai','Rourkela','Jamshedpur','Durgapur'],ans:2},
+      {q:'Cotton textile industry in India is concentrated in:',opts:['Delhi and Kolkata','Mumbai and Ahmedabad','Chennai and Bangalore','Lucknow and Patna'],ans:1},
+      {q:'Sugar industry is a:',opts:['Mineral-based industry','Agro-based industry','Forest-based industry','Marine-based industry'],ans:1},
+      {q:'India\'s IT capital is:',opts:['Mumbai','Delhi','Bangalore','Hyderabad'],ans:2},
+      {q:'National Thermal Power Corporation (NTPC) is a:',opts:['Private sector company','Public sector company','Joint sector company','Foreign company'],ans:1},
+    ],
+    reasoning: [
+      {q:'Why do industries tend to concentrate in certain regions of India while others remain underdeveloped?'},
+      {q:'How does industrialization contribute to environmental pollution and what can be done to minimize its impact?'},
+    ],
+    competency: 'The automobile industry in India has grown significantly. Identify the factors that have contributed to this growth and the challenges it faces.',
+    activity: 'Map exercise: Locate all major iron and steel plants in India and explain why each is located where it is.',
+    mapInfo: 'Industrial clusters: Mumbai-Pune (engineering), Ahmedabad-Surat (textiles), Chennai-Bangalore (IT and auto), Jamshedpur (steel).',
+    simulation: 'industrialMapSimulation'
+  },
+
+  {
+    id: 'g5', subject: 'Geography', icon: '🚂',
+    title: 'Lifelines of the National Economy',
+    color: '#388e3c',
+    concept: `Transport and communication connect different parts of the country and world, facilitating trade and movement of people. India has one of the world's largest networks of roads, railways, airways, and waterways. Communication has been transformed by the internet and mobile technology.`,
+    keyPoints: [
+      'Road transport: most flexible; NH connects major cities',
+      'Railways: lifeline for passenger and freight transport',
+      'Waterways: cheapest; National Waterways 1 (Ganga), 2 (Brahmaputra)',
+      'Airways: fastest but expensive; domestic and international',
+      'Pipelines: transport oil, natural gas, water',
+      'Communication: internet, satellite, mobile revolution'
+    ],
+    timeline: [
+      {year:'1853',event:'First railway in India: Mumbai to Thane'},
+      {year:'1947',event:'National highways inherited at Independence'},
+      {year:'1988',event:'National Highway Authority of India (NHAI) established'},
+      {year:'1995',event:'Internet introduced in India'},
+      {year:'2000s',event:'Mobile phone revolution transforms communication'},
+      {year:'2015',event:'Digital India initiative launched'},
+    ],
+    flashcards: [
+      {q:'What is the Golden Quadrilateral?',a:'A super highway connecting Delhi, Mumbai, Chennai, and Kolkata — 5,846 km — India\'s largest highway project.'},
+      {q:'What is the busiest railway zone in India?',a:'Northern Railway Zone — connecting Delhi with major cities across north India.'},
+      {q:'What are National Waterways?',a:'Designated inland water routes for navigation. NW-1: Allahabad to Haldia (Ganga). NW-2: Sadiya to Dhubri (Brahmaputra).'},
+      {q:'What is the largest port in India?',a:'Jawaharlal Nehru Port (JNPT/Nhava Sheva) near Mumbai — handles the largest cargo volume.'},
+      {q:'What is the Digital India initiative?',a:'A government program to provide high-speed internet to rural areas and move government services online.'},
+    ],
+    quiz: [
+      {q:'India\'s first railway ran between:',opts:['Delhi and Agra','Kolkata and Dhanbad','Mumbai and Thane','Chennai and Madurai'],ans:2},
+      {q:'Golden Quadrilateral connects which four cities?',opts:['Delhi-Mumbai-Kolkata-Chennai','Delhi-Mumbai-Bangalore-Chennai','Mumbai-Pune-Nagpur-Hyderabad','Delhi-Jaipur-Ahmedabad-Mumbai'],ans:0},
+      {q:'The cheapest mode of transport is:',opts:['Airways','Railways','Roadways','Waterways'],ans:3},
+      {q:'Which National Waterway passes through the Ganga?',opts:['NW-1','NW-2','NW-3','NW-4'],ans:0},
+      {q:'JNPT port is located near:',opts:['Kolkata','Chennai','Mumbai','Kochi'],ans:2},
+    ],
+    reasoning: [
+      {q:'How does an efficient transport system contribute to a country\'s economic development?'},
+      {q:'Why is road transport more important than railways for the transportation of perishable goods?'},
+    ],
+    competency: 'Compare the transport infrastructure of a developed country (Germany) with India. What improvements does India need to make?',
+    activity: 'On an outline map of India, draw the Golden Quadrilateral and mark the four cities it connects.',
+    mapInfo: 'Mark India\'s major transport networks: Golden Quadrilateral highway, major railway zones, important ports (Mumbai, Kolkata, Chennai).',
+    simulation: 'transportMapSimulation'
+  },
+
+  {
+    id: 'g6', subject: 'Geography', icon: '💧',
+    title: 'Water Resources',
+    color: '#1565c0',
+    concept: `Water is essential for life and development. Despite having large rivers, India faces water scarcity due to uneven distribution, over-extraction, and pollution. Multipurpose river projects, rainwater harvesting, and conservation are crucial for sustainable water management.`,
+    keyPoints: [
+      'Freshwater is 2.5% of total water; India has 4% of world\'s freshwater',
+      'Water scarcity: physical (lack of water) vs. economic (lack of access)',
+      'Multipurpose projects: dams for irrigation, power, flood control',
+      'Criticism of dams: displacement, ecological damage, inter-state disputes',
+      'Rainwater harvesting: traditional (johads, baolis, tankas, kuls)',
+      'Watershed development: integrated water management approach'
+    ],
+    timeline: [
+      {year:'1960s',event:'Large dam construction begins in India (Bhakra-Nangal)'},
+      {year:'1974',event:'Narmada Bachao Andolan protests against dam displacement'},
+      {year:'1978',event:'National Water Policy formulated'},
+      {year:'2002',event:'National Water Mission under NAPCC'},
+      {year:'2015',event:'Pradhan Mantri Krishi Sinchayee Yojana launched'},
+    ],
+    flashcards: [
+      {q:'What is water scarcity?',a:'Insufficient freshwater to meet the demands of a population. Can be physical (dry areas) or economic (water there but no access).'},
+      {q:'What are multipurpose river projects?',a:'Large dams built for multiple purposes: irrigation, electricity generation, flood control, navigation, recreation. E.g., Bhakra-Nangal.'},
+      {q:'What is rainwater harvesting?',a:'Collection and storage of rainwater for later use. Traditional methods: Johads (Rajasthan), Kuls (Himachal Pradesh), Tankas.'},
+      {q:'Why has Narmada Bachao Andolan protested against Sardar Sarovar Dam?',a:'Mass displacement of adivasi and farming communities without adequate rehabilitation and compensation.'},
+      {q:'What are baolis?',a:'Traditional stepwells used for rainwater harvesting and storage, especially in Rajasthan and Delhi.'},
+    ],
+    quiz: [
+      {q:'India receives about ___% of world\'s freshwater resources:',opts:['2%','4%','10%','15%'],ans:1},
+      {q:'Johads are traditional water conservation structures found in:',opts:['Tamil Nadu','Kerala','Rajasthan','Assam'],ans:2},
+      {q:'Bhakra-Nangal dam is built on which river?',opts:['Ganga','Yamuna','Sutlej','Indus'],ans:2},
+      {q:'Narmada Bachao Andolan was led by:',opts:['Medha Patkar','Anna Hazare','Sundarlal Bahuguna','Vandana Shiva'],ans:0},
+      {q:'Physical water scarcity means:',opts:['Water is expensive','There is not enough water in the region','People cannot afford water','Water quality is poor'],ans:1},
+    ],
+    reasoning: [
+      {q:'How can rainwater harvesting solve the problem of water scarcity in semi-arid regions of India?'},
+      {q:'Dams are called "temples of modern India" but also cause suffering. Evaluate both perspectives.'},
+    ],
+    competency: 'Your district faces water shortage every summer. Design a community-level rainwater harvesting plan using traditional methods.',
+    activity: 'Calculate your daily water consumption and identify ways to reduce it by 20%.',
+    mapInfo: 'India\'s major river systems: Indus, Ganga, Brahmaputra, Narmada, Krishna, Godavari. Mark major dams on each river.',
+    simulation: 'waterResourceSimulation'
+  },
+
+  {
+    id: 'g7', subject: 'Geography', icon: '🦁',
+    title: 'Forest and Wildlife Resources',
+    color: '#004d40',
+    concept: `Forests cover about 21% of India's area and are home to diverse wildlife. India has several conservation programs including Project Tiger and Project Elephant. Biodiversity loss due to deforestation, poaching, and habitat destruction is a major concern. Community-based forest management is proving effective.`,
+    keyPoints: [
+      'India: 8% of world\'s biodiversity; 89,000+ animal species',
+      'Deforestation causes: agriculture, industry, urbanization',
+      'Reserved forests: most protected; about 53% of forest area',
+      'Protected areas: 104 National Parks, 566 Wildlife Sanctuaries',
+      'Project Tiger (1973): India\'s most successful conservation program',
+      'Community reserves: Joint Forest Management with local communities'
+    ],
+    timeline: [
+      {year:'1952',event:'First National Forest Policy; reserved forests created'},
+      {year:'1972',event:'Wildlife Protection Act passed; illegal poaching banned'},
+      {year:'1973',event:'Project Tiger launched to save Bengal tiger'},
+      {year:'1980',event:'Forest Conservation Act; central approval needed to divert forests'},
+      {year:'2006',event:'Forest Rights Act; tribal communities given forest rights'},
+    ],
+    flashcards: [
+      {q:'What are Reserved Forests?',a:'Forests under strictest protection where no human activity is allowed. About 53% of total forest area in India.'},
+      {q:'What is Project Tiger?',a:'A conservation program launched in 1973 to protect Bengal tigers. Tiger population has grown from 1800 to over 3000 now.'},
+      {q:'What is Joint Forest Management (JFM)?',a:'A program where local communities and forest departments jointly manage and protect forests, sharing the benefits.'},
+      {q:'What is biodiversity hotspot?',a:'A region with exceptionally high number of species and significant levels of endemic species under threat. India has 4 hotspots.'},
+      {q:'What are sacred groves?',a:'Patches of forest protected by local communities for religious/cultural reasons. Examples: Khasi community in Meghalaya.'},
+    ],
+    quiz: [
+      {q:'Project Tiger was launched in:',opts:['1952','1963','1973','1983'],ans:2},
+      {q:'Reserved forests occupy about ___% of total forest area in India:',opts:['23%','53%','73%','33%'],ans:1},
+      {q:'India\'s "sacred groves" are forest patches protected by:',opts:['Government','Local communities for religious reasons','Army','Forest officers'],ans:1},
+      {q:'Which Act gives tribal communities rights over forests?',opts:['Wildlife Protection Act 1972','Forest Rights Act 2006','Forest Conservation Act 1980','Environment Act 1986'],ans:1},
+      {q:'India has how many National Parks (approximately)?',opts:['50','104','200','30'],ans:1},
+    ],
+    reasoning: [
+      {q:'Why is community participation essential for successful forest conservation? Give examples from India.'},
+      {q:'How does deforestation in one region affect the climate and water supply of distant regions?'},
+    ],
+    competency: 'Design a conservation plan for a wildlife sanctuary in your region. Include measures for protecting animals, involving local communities, and preventing poaching.',
+    activity: 'Create a biodiversity record for your school garden or neighborhood. Identify and classify all plants and animals you observe.',
+    mapInfo: 'Mark India\'s major National Parks and Wildlife Sanctuaries. Identify the ones in J&K (Dachigam, Hemis).',
+    simulation: 'forestMapSimulation'
+  },
+
+  // ---- POLITICAL SCIENCE ----
+  {
+    id: 'ps1', subject: 'Political Science', icon: '🤝',
+    title: 'Power Sharing',
+    color: '#0d47a1',
+    concept: `Power sharing is a system where political power is distributed among different organs of government, levels of government, and social groups. Belgium and Sri Lanka are compared to understand why power sharing is essential for democracy and national unity. Power sharing prevents domination by any one group.`,
+    keyPoints: [
+      'Belgium: Dutch-speaking majority vs. French-speaking minority; power shared through community government',
+      'Sri Lanka: Sinhalese majority imposed language and culture on Tamil minority — led to civil war',
+      'Prudential reasons: power sharing reduces conflict and instability',
+      'Moral reasons: power sharing is inherently right in democracy',
+      'Horizontal sharing: between legislature, executive, judiciary',
+      'Vertical sharing: central, state, local government levels'
+    ],
+    timeline: [
+      {year:'1956',event:'Sri Lanka makes Sinhala official language; Tamil protests begin'},
+      {year:'1983',event:'Civil war begins in Sri Lanka; Tamil Tigers formed'},
+      {year:'1993',event:'Belgium adopts community government system'},
+      {year:'2009',event:'Sri Lankan civil war ends; Tamil Tigers defeated'},
+      {year:'2019',event:'Belgium forms government after 541 days without coalition'},
+    ],
+    flashcards: [
+      {q:'What is power sharing?',a:'Distribution of political power among different organs of government (legislature, executive, judiciary) and levels (federal, state, local).'},
+      {q:'What is the Belgium model?',a:'Community government system where different language communities have equal representation and veto power, preventing domination by majority.'},
+      {q:'What led to civil war in Sri Lanka?',a:'Sinhala-only language policy (1956) marginalized Tamils, eventually leading to armed Tamil separatist movement and prolonged civil war.'},
+      {q:'What are prudential reasons for power sharing?',a:'Power sharing reduces conflict, prevents instability, and leads to better decisions — practical benefits for the country.'},
+      {q:'What are moral reasons for power sharing?',a:'Democratic principle: those who live under a government have the right to participate in it. Power sharing is intrinsically right.'},
+    ],
+    quiz: [
+      {q:'In Belgium, the community government has power over:',opts:['Defence and Foreign policy','Education and Culture','Railways and Finance','All matters'],ans:1},
+      {q:'Sri Lanka\'s civil conflict was primarily between:',opts:['Hindus and Muslims','Sinhalese and Tamils','Tamil and Christians','Buddhists and Hindus'],ans:1},
+      {q:'Horizontal power sharing refers to:',opts:['Federal-state relations','Between legislature, executive, judiciary','Local government powers','Cultural group representation'],ans:1},
+      {q:'Which of the following is a prudential reason for power sharing?',opts:['It is morally correct','It reflects the will of the people','It helps reduce conflict','It guarantees equality'],ans:2},
+      {q:'Belgium has ______ official languages:',opts:['One (French)','Two (French and Dutch)','Three (French, Dutch, German)','Four'],ans:2},
+    ],
+    reasoning: [
+      {q:'Why did the "majoritarianism" approach fail in Sri Lanka? Could it have been avoided?'},
+      {q:'Is power sharing the same as weakness of government? Argue your position.'},
+    ],
+    competency: 'Design a power-sharing arrangement for a country with three major ethnic groups. How would you ensure fair representation without causing conflict?',
+    activity: 'Research: Find examples of power-sharing arrangements in three different countries. Compare them.',
+    mapInfo: 'Locate Belgium (French-Flemish divide) and Sri Lanka (Sinhalese north-south, Tamil northeast) on maps.',
+    simulation: 'powerSharingSimulation'
+  },
+
+  {
+    id: 'ps2', subject: 'Political Science', icon: '🏛️',
+    title: 'Federalism',
+    color: '#1565c0',
+    concept: `Federalism is a system of government where powers are divided between the national (central) government and state governments. India is a federal country with a strong centre. Federalism promotes regional autonomy while maintaining national unity. Decentralization to local governments is the third tier of Indian federalism.`,
+    keyPoints: [
+      'Federal features of India: dual government, written constitution, division of powers',
+      'Union list, State list, Concurrent list',
+      'Unitary features: strong centre, Emergency powers, Rajya Sabha',
+      'Coming together vs. Holding together federations',
+      'Decentralization 1992: 73rd and 74th Amendments; Panchayati Raj',
+      'Coalition governments: feature of modern Indian federalism'
+    ],
+    timeline: [
+      {year:'1950',event:'Indian Constitution establishes federal structure'},
+      {year:'1956',event:'States Reorganization Act creates linguistically organized states'},
+      {year:'1975',event:'Emergency imposes unitary system temporarily'},
+      {year:'1992',event:'73rd and 74th Amendments; Panchayati Raj strengthened'},
+      {year:'2000',event:'New states created: Jharkhand, Chhattisgarh, Uttarakhand'},
+      {year:'2014',event:'Telangana created from Andhra Pradesh'},
+    ],
+    flashcards: [
+      {q:'What is federalism?',a:'A system of government where power is constitutionally divided between central government and state governments, both having independent powers.'},
+      {q:'What is the Union List?',a:'List of 100 subjects on which only the central government can make laws. E.g., Defence, Foreign affairs, Currency.'},
+      {q:'What is the Concurrent List?',a:'List of 52 subjects on which both central and state governments can make laws. Central law prevails on conflict. E.g., Education, Forests.'},
+      {q:'What is the 73rd Amendment?',a:'1992 amendment that constitutionally mandated Panchayati Raj (three-tier local government) with reserved seats for SC/ST and women.'},
+      {q:'What is a coalition government?',a:'A government formed by alliance of two or more political parties when no single party has majority. Common in Indian states and at centre since 1989.'},
+    ],
+    quiz: [
+      {q:'Which of these is a Union List subject?',opts:['Agriculture','Education','Defence','Police'],ans:2},
+      {q:'The 73rd Amendment deals with:',opts:['Right to Education','Panchayati Raj','Reservations','Environment'],ans:1},
+      {q:'"Coming together" federation refers to:',opts:['States merging to form a nation (USA model)','Nation splitting into states','Emergency powers','Language-based states'],ans:0},
+      {q:'Which subject is in the Concurrent List?',opts:['Currency','Defence','Education','Diplomatic relations'],ans:2},
+      {q:'India can be described as:',opts:['Purely federal','Purely unitary','Federal with unitary bias','Confederation'],ans:2},
+    ],
+    reasoning: [
+      {q:'Why did India need linguistic reorganization of states in 1956? Was it a good decision?'},
+      {q:'How does the three-tier federal system (Union-State-Local) help in better governance of India?'},
+    ],
+    competency: 'Compare Indian federalism with that of the USA and identify three key differences. Which model do you think is better for a diverse country?',
+    activity: 'Find examples of how central-state conflicts arise in India (e.g., river water disputes). Analyze one such dispute.',
+    mapInfo: 'Map exercise: Mark all 28 states and 8 Union Territories of India and identify their state capitals.',
+    simulation: 'federalismSimulation'
+  },
+
+  {
+    id: 'ps3', subject: 'Political Science', icon: '🌈',
+    title: 'Democracy and Diversity',
+    color: '#1976d2',
+    concept: `Democracies contain social divisions like race, religion, language, and class. Whether such diversity leads to conflict or peaceful coexistence depends on how political leaders handle it. The Civil Rights Movement in the USA and the Mexico Olympics Black Power salute show how social divisions can be politically expressed.`,
+    keyPoints: [
+      'Social differences can lead to social division if they overlap',
+      'Cross-cutting differences are easier to manage than overlapping ones',
+      'Civil Rights Movement: African Americans struggled for equality in USA',
+      '1968 Olympics: Tommie Smith and John Carlos Black Power salute',
+      'Three factors determine political outcome of social diversity',
+      'India: multiple overlapping social divisions prevent one dominant cleavage'
+    ],
+    timeline: [
+      {year:'1954',event:'Brown v. Board of Education — US Supreme Court desegregates schools'},
+      {year:'1955',event:'Montgomery Bus Boycott led by Rosa Parks and MLK'},
+      {year:'1964',event:'US Civil Rights Act passed; racial discrimination outlawed'},
+      {year:'1965',event:'Voting Rights Act gives African Americans voting rights'},
+      {year:'1968',event:'Mexico Olympics Black Power salute by Smith and Carlos'},
+    ],
+    flashcards: [
+      {q:'What is a social cleavage?',a:'A division in society based on differences like religion, race, language, or class that can lead to political conflict.'},
+      {q:'What were the Civil Rights Movements?',a:'Movements by African Americans in the USA (1950s-60s) demanding equal rights and an end to racial discrimination.'},
+      {q:'What is the difference between overlapping and cross-cutting identities?',a:'Overlapping: same group faces multiple disadvantages (deepens conflict). Cross-cutting: people share some and differ on other identities (reduces conflict).'},
+      {q:'What was the significance of the 1968 Olympics protest?',a:'Tommie Smith and John Carlos raised black-gloved fists to protest racial inequality in USA — a global symbol of the civil rights struggle.'},
+      {q:'Why is India relatively better at managing social diversity?',a:'India has multiple cross-cutting social divisions (caste, religion, language, region) that prevent any single division from becoming dominant.'},
+    ],
+    quiz: [
+      {q:'The 1968 Olympics protest was held in:',opts:['Tokyo','Munich','Mexico City','Moscow'],ans:2},
+      {q:'The US Civil Rights Act was passed in:',opts:['1954','1958','1964','1968'],ans:2},
+      {q:'Cross-cutting social differences:',opts:['Lead to more conflict','Help in managing diversity peacefully','Always cause instability','Are found only in India'],ans:1},
+      {q:'The Montgomery Bus Boycott was associated with:',opts:['Women\'s rights','Voting rights','Racial desegregation of public transport','Immigration'],ans:2},
+      {q:'Which of the following is an overlapping social difference?',opts:['A rich Muslim and a poor Hindu','A Black poor man in segregation-era USA','A Hindu man speaking English','A woman doctor'],ans:1},
+    ],
+    reasoning: [
+      {q:'Why do social divisions not always lead to political conflict? What determines whether diversity leads to unity or division?'},
+      {q:'How was the experience of African Americans in the USA similar to or different from the treatment of Dalits in India?'},
+    ],
+    competency: 'Create a case study of one country where diversity led to conflict and one where it led to harmony. Identify the key factors that made the difference.',
+    activity: 'Survey your school: How many social groups (religion, language, region) are represented? Do students from different groups interact freely?',
+    mapInfo: 'Map showing global distribution of racial and ethnic conflicts in the 20th century.',
+    simulation: 'diversitySimulation'
+  },
+
+  {
+    id: 'ps4', subject: 'Political Science', icon: '⚤',
+    title: 'Gender, Religion and Caste',
+    color: '#0288d1',
+    concept: `Democracy must address social inequalities based on gender, religion, and caste. India has made progress but significant discrimination persists. Political representation for women, minorities, and Dalits is crucial. Religion in politics can be both a unifying and dividing force. Caste-based politics is unique to India.`,
+    keyPoints: [
+      'Gender discrimination: patriarchy, unequal pay, low representation in politics',
+      'Women\'s representation in Indian Parliament: only ~15%',
+      'Communalism: using religion to gain political power — dangerous',
+      'Secular state: separation of religion and state (India: equal treatment)',
+      'Caste in politics: reservation system, caste-based voting patterns',
+      'Positive caste politics: upliftment of SC/ST/OBC communities'
+    ],
+    timeline: [
+      {year:'1947',event:'India adopts universal adult suffrage including women'},
+      {year:'1950',event:'Constitution prohibits discrimination based on religion, caste, sex'},
+      {year:'1990',event:'Mandal Commission report; OBC reservations controversially expanded'},
+      {year:'1993',event:'One-third seats reserved for women in Panchayats'},
+      {year:'2023',event:'Women\'s Reservation Bill passed: 33% seats in Parliament'},
+    ],
+    flashcards: [
+      {q:'What is patriarchy?',a:'A social system where men hold primary power in family, political leadership, and social privilege. Women are systematically subordinated.'},
+      {q:'What is communalism?',a:'Using religion to mobilize political support; treating one religious community as an enemy of another. Dangerous for democracy.'},
+      {q:'What is the sex ratio?',a:'Number of females per 1000 males. India\'s sex ratio is around 940 — indicating female infanticide and discrimination.'},
+      {q:'What is reservations policy?',a:'Constitutional provision for scheduled castes, scheduled tribes, and OBCs in government jobs and educational institutions to address historical discrimination.'},
+      {q:'What is feminist politics?',a:'Political movement demanding equal rights for women including equal pay, end to violence against women, and equal political representation.'},
+    ],
+    quiz: [
+      {q:'What percentage of seats are reserved for women in Indian Parliament (2023 act)?',opts:['15%','25%','33%','50%'],ans:2},
+      {q:'India is a secular state which means:',opts:['Religion is banned','All citizens follow one religion','The state treats all religions equally','The government promotes Hinduism'],ans:2},
+      {q:'Communalism refers to:',opts:['Community development','Using religion for political mobilization','Caste-based politics','Women\'s empowerment'],ans:1},
+      {q:'Child sex ratio problem in India is mainly due to:',opts:['Women having more diseases','Female foeticide and infanticide','Migration of women','Natural causes'],ans:1},
+      {q:'Reservation in Indian Parliament applies to which groups?',opts:['Women and Muslims','Scheduled Castes and Scheduled Tribes','All minorities','Only Scheduled Tribes'],ans:1},
+    ],
+    reasoning: [
+      {q:'Is political reservation for women a genuine solution to gender inequality or just a symbolic measure? Evaluate critically.'},
+      {q:'How does caste influence Indian elections? Is caste-based politics always negative?'},
+    ],
+    competency: 'Analyze the representation of women in Indian Parliament compared to three other democracies. What factors explain the differences?',
+    activity: 'Survey your household: Who makes major decisions? How are household tasks divided between men and women?',
+    mapInfo: 'Map showing percentage of women in parliament across different countries.',
+    simulation: 'genderPoliticsSimulation'
+  },
+
+  {
+    id: 'ps5', subject: 'Political Science', icon: '🗳️',
+    title: 'Popular Struggles and Movements',
+    color: '#01579b',
+    concept: `Democracies are shaped by popular struggles, social movements, and pressure groups. The Bolivian water movement and Nepal's democracy movement show how people's power can challenge governments. Interest groups and movements influence policy without seeking political power directly.`,
+    keyPoints: [
+      'Nepal: democracy movement against King Gyanendra (2006)',
+      'Bolivia: water war against privatization of water supply (2000)',
+      'Difference: movements (temporary, issue-based) vs. parties (permanent)',
+      'Pressure groups: business associations, trade unions, farmers\' groups',
+      'Sectional groups: promote interests of a section (e.g., FICCI)',
+      'Public interest groups: promote general public interest (e.g., BAMCEF)'
+    ],
+    timeline: [
+      {year:'1990',event:'Nepal\'s first democracy movement; King accepts constitutional monarchy'},
+      {year:'2000',event:'Bolivia water war; privatization reversed after mass protests'},
+      {year:'2001',event:'King Gyanendra dismisses Nepal government'},
+      {year:'2006',event:'Second democracy movement in Nepal; King surrenders power'},
+      {year:'2008',event:'Nepal becomes a republic; monarchy abolished'},
+    ],
+    flashcards: [
+      {q:'What was the Bolivia water war?',a:'In 2000, Bolivian government privatized water supply; prices tripled. Mass protests forced government to reverse the decision.'},
+      {q:'What is a pressure group?',a:'An organization that attempts to influence government policies without seeking power itself. E.g., trade unions, farmers\' associations.'},
+      {q:'What is the difference between pressure groups and political parties?',a:'Parties seek to control government power; pressure groups only try to influence policies while staying outside government.'},
+      {q:'What happened in Nepal in 2006?',a:'A mass democracy movement forced King Gyanendra to restore Parliament. Nepal became a republic in 2008.'},
+      {q:'What are public interest groups?',a:'Groups that promote causes for the benefit of all citizens, not just their members. E.g., environmental groups, human rights organizations.'},
+    ],
+    quiz: [
+      {q:'The Bolivia water movement was against:',opts:['Water pollution','Privatization of water supply','Flood control','Water shortage'],ans:1},
+      {q:'Nepal became a republic in:',opts:['1990','2000','2006','2008'],ans:3},
+      {q:'FICCI is an example of:',opts:['Public interest group','Sectional interest group','Political party','Social movement'],ans:1},
+      {q:'What distinguishes a movement from a political party?',opts:['Size','Permanence — movements are temporary, parties are permanent','Ideology','Membership'],ans:1},
+      {q:'In 2006, Nepal\'s popular movement forced:',opts:['Elections','Reversal of water privatization','King to give up absolute power','Land reforms'],ans:2},
+    ],
+    reasoning: [
+      {q:'Why do popular movements and pressure groups play an essential role in democracy even when elections exist?'},
+      {q:'Compare the methods used in Nepal\'s democracy movement and Bolivia\'s water movement. Which was more successful?'},
+    ],
+    competency: 'Identify a current social movement in India. Analyze its goals, methods, and how it is influencing government policy.',
+    activity: 'Research: List five major pressure groups in India and their areas of influence.',
+    mapInfo: 'Locate Bolivia and Nepal and understand the political geography that shaped their movements.',
+    simulation: 'movementsSimulation'
+  },
+
+  {
+    id: 'ps6', subject: 'Political Science', icon: '🎭',
+    title: 'Political Parties',
+    color: '#283593',
+    concept: `Political parties are essential institutions of modern democracy. They contest elections, form governments, and represent different sections of society. India has a multi-party system with national parties (BJP, INC, BSP) and state parties. Political parties need to reform to make democracy more meaningful.`,
+    keyPoints: [
+      'Functions: contest elections, form opinion, make policies',
+      'Necessary for democracy: can\'t have elections without parties',
+      'National parties: recognized by Election Commission across states',
+      'State parties: recognized in one state; important in coalition politics',
+      'Challenges: dynasticism, lack of internal democracy, money and muscle power',
+      'Reforms: legal binding to hold elections, women representation'
+    ],
+    timeline: [
+      {year:'1885',event:'Indian National Congress founded — India\'s oldest political party'},
+      {year:'1951',event:'Bharatiya Jana Sangh (predecessor to BJP) founded'},
+      {year:'1975',event:'Emergency suspends multi-party democracy temporarily'},
+      {year:'1984',event:'Political parties proliferate in post-Emergency era'},
+      {year:'2014',event:'BJP wins outright majority; end of coalition era (briefly)'},
+    ],
+    flashcards: [
+      {q:'What is a political party?',a:'An organized group that seeks to capture political power through elections, having a common ideology and program.'},
+      {q:'What is an ideology?',a:'A set of beliefs and values that guides a political party\'s policies and programs. E.g., BJP (Hindu nationalism), INC (secular nationalism).'},
+      {q:'What is the difference between ruling party and opposition?',a:'Ruling party: has majority and forms government. Opposition: critical of government, holds it accountable without having power.'},
+      {q:'What criteria make a party a "national party"?',a:'Recognized by Election Commission; must win minimum 6% votes and 4 seats in 4 states OR 4 seats and 6% votes at national level.'},
+      {q:'What is dynastic politics?',a:'When party leadership passes from parent to child, reducing internal democracy. Common criticism of Indian political parties.'},
+    ],
+    quiz: [
+      {q:'Which is NOT a function of political parties?',opts:['Contest elections','Form government','Adjudicate disputes','Mobilize public opinion'],ans:2},
+      {q:'National parties in India are recognized by:',opts:['Prime Minister','Supreme Court','Election Commission','Lok Sabha Speaker'],ans:2},
+      {q:'The right to vote in India is given to citizens above what age?',opts:['16','18','21','25'],ans:1},
+      {q:'India has a ______ party system:',opts:['One','Two','Multi','No'],ans:2},
+      {q:'What is the main challenge to internal democracy in parties?',opts:['Too many elections','Dynastic and centralized leadership','Foreign interference','Media'],ans:1},
+    ],
+    reasoning: [
+      {q:'Can democracy function without political parties? Justify your answer with examples.'},
+      {q:'What reforms would you suggest to make Indian political parties more democratic and responsive?'},
+    ],
+    competency: 'Study the manifestos of two major political parties. Compare their positions on education, poverty, and foreign policy. Which aligns better with NEP 2020 goals?',
+    activity: 'Role-play: Form two political parties in class. Hold a debate on a local issue and have a mock vote.',
+    mapInfo: 'Map showing electoral results — which parties are dominant in which states of India.',
+    simulation: 'politicalPartiesSimulation'
+  },
+
+  {
+    id: 'ps7', subject: 'Political Science', icon: '✅',
+    title: 'Outcomes of Democracy',
+    color: '#1a237e',
+    concept: `Does democracy deliver what it promises? Democracies are better than authoritarian regimes in accountability, rights protection, and peaceful conflict resolution. However, democracies often disappoint in reducing economic inequality and providing good governance. The democratic process itself has value beyond its outcomes.`,
+    keyPoints: [
+      'Democracy creates accountable government through elections',
+      'Democratic decisions are more legitimate — process matters',
+      'Democracy protects rights and dignity of citizens',
+      'Democracies rarely go to war with each other',
+      'Limitation: democracies can be slow and inefficient',
+      'Economic outcomes: democracies not necessarily better at reducing inequality'
+    ],
+    timeline: [
+      {year:'1947',event:'India becomes world\'s largest democracy'},
+      {year:'1975',event:'Emergency period tests democratic institutions'},
+      {year:'1977',event:'Democracy restored; first non-Congress government'},
+      {year:'1990s',event:'Expansion of democracy globally after Cold War'},
+      {year:'2020',event:'Democratic backsliding concerns in many countries'},
+    ],
+    flashcards: [
+      {q:'What is accountability in democracy?',a:'Elected representatives are answerable to the people who elected them and can be voted out if they fail to perform.'},
+      {q:'What is democratic legitimacy?',a:'Democratic decisions have greater acceptance because citizens have participated in making them through elections and debate.'},
+      {q:'How do democracies handle social conflict?',a:'By providing peaceful mechanisms: elections, courts, constitutional rights — allowing all groups to express grievances legally.'},
+      {q:'What is the key weakness of democracy regarding economy?',a:'Democracies do not automatically reduce inequality — vested interests can block redistribution policies.'},
+      {q:'What does "dignified existence" mean in democratic context?',a:'All citizens have equal rights regardless of social background — democracy protects human dignity.'},
+    ],
+    quiz: [
+      {q:'The main advantage of democracy over dictatorship is:',opts:['Faster decision making','Economic prosperity','Accountability and representation','Military strength'],ans:2},
+      {q:'Democracies are less likely to:',opts:['Have elections','Go to war with each other','Have free media','Have opposition parties'],ans:1},
+      {q:'Economic inequality in India suggests that democracy:',opts:['Has solved poverty','Has failed completely','Has not automatically reduced inequality','Has no economic role'],ans:2},
+      {q:'Which of the following is NOT an expected outcome of democracy?',opts:['Rule of law','Equal distribution of wealth','Protection of rights','Accountable government'],ans:1},
+      {q:'Democratic legitimacy means:',opts:['The strongest party always wins','Decisions are accepted because of the process','All decisions are correct','Government can do anything'],ans:1},
+    ],
+    reasoning: [
+      {q:'A critic says "China has grown faster economically than India, proving democracy is inefficient." How would you respond?'},
+      {q:'What are the limits of democracy? Are there situations where democratic methods might not work?'},
+    ],
+    competency: 'Rate Indian democracy on five criteria: accountability, equality, rights, social justice, economic development. Justify each rating with evidence.',
+    activity: 'Interview five adults about whether they are satisfied with how democracy works in India. Analyze their responses.',
+    mapInfo: 'Map showing democracy index across countries — where does India rank and why?',
+    simulation: 'democracyOutcomesSimulation'
+  },
+
+  {
+    id: 'ps8', subject: 'Political Science', icon: '💪',
+    title: 'Challenges to Democracy',
+    color: '#311b92',
+    concept: `While democracy has spread globally, it faces serious challenges: corruption, communalism, inequality, and authoritarian tendencies. Deepening democracy requires greater participation, reduction of money power in politics, and stronger civil society. India faces its own unique challenges to democratic quality.`,
+    keyPoints: [
+      'Foundational challenge: establishing democracy (military regimes)',
+      'Challenge of expansion: extending democratic rights more fully',
+      'Challenge of deepening: stronger institutions, less corruption',
+      'Money and muscle power undermine free and fair elections',
+      'Electoral reforms: EVMs, right to information, electoral bonds',
+      'Civil society: media, NGOs, movements strengthen democracy'
+    ],
+    timeline: [
+      {year:'1951',event:'First general elections in India — world\'s largest democratic experiment'},
+      {year:'1977',event:'JP Movement; Emergency ends; democracy strengthened'},
+      {year:'2005',event:'Right to Information Act — citizen empowerment'},
+      {year:'2013',event:'Electoral reforms; Aadhaar for voter ID'},
+      {year:'2023',event:'Electoral bonds controversy highlights money in politics'},
+    ],
+    flashcards: [
+      {q:'What is the foundational challenge to democracy?',a:'Establishing democratic government where it doesn\'t exist — overthrowing non-democratic rule and creating democratic institutions.'},
+      {q:'What is the challenge of deepening democracy?',a:'Making democratic institutions stronger, reducing corruption, giving more power to citizens, and making government more responsive.'},
+      {q:'What is the Right to Information Act?',a:'2005 law giving citizens the right to request information from government offices within 30 days. Powerful anti-corruption tool.'},
+      {q:'What role do civil society organizations play?',a:'Media, NGOs, and social movements hold government accountable, raise public awareness, and advocate for rights.'},
+      {q:'What is electoral reform?',a:'Changes to election rules and systems to make elections fairer, more transparent, and less influenced by money and power.'},
+    ],
+    quiz: [
+      {q:'The challenge of "expansion" in democracy refers to:',opts:['More elections','Extending rights to all sections','More political parties','Territorial expansion'],ans:1},
+      {q:'RTI Act (Right to Information) was passed in:',opts:['1995','2000','2005','2010'],ans:2},
+      {q:'Which is a challenge to Indian democracy?',opts:['Too many elections','Corruption and money in politics','Free media','Strong judiciary'],ans:1},
+      {q:'Civil society organizations include:',opts:['Political parties','Media, NGOs, and social movements','Government departments','All of the above'],ans:1},
+      {q:'"Deepening democracy" primarily means:',opts:['More territory','More powerful government','Better quality institutions and less corruption','More elections'],ans:2},
+    ],
+    reasoning: [
+      {q:'How does money power in elections undermine democracy? Can electoral reforms really solve this problem?'},
+      {q:'Are the challenges faced by established democracies like India different from those of newly formed democracies? How?'},
+    ],
+    competency: 'Evaluate three specific challenges facing Indian democracy today. For each challenge, propose one concrete reform with justification.',
+    activity: 'File an RTI application for information about a local government office. Document the process and outcome.',
+    mapInfo: 'Map showing freedom index / democracy index across world regions.',
+    simulation: 'challengesDemoSimulation'
+  },
+
+  // ---- ECONOMICS ----
+  {
+    id: 'e1', subject: 'Economics', icon: '📈',
+    title: 'Development',
+    color: '#e65100',
+    concept: `Development means improvement in the quality of life. Different people have different notions of development. National development cannot be captured by a single indicator like income. HDI (Human Development Index) measures income, health, and education together. Sustainable development balances economic growth with environmental protection.`,
+    keyPoints: [
+      'Development has different meanings for different people',
+      'Per Capita Income (PCI): average income per person',
+      'National development needs multiple indicators',
+      'HDI: combines income (GNI), health (life expectancy), education (mean years of schooling)',
+      'India\'s HDI rank: around 132 out of 191 countries',
+      'Amartya Sen: development = expansion of freedoms'
+    ],
+    timeline: [
+      {year:'1990',event:'UNDP launches first Human Development Report and HDI'},
+      {year:'1998',event:'Amartya Sen receives Nobel Prize for capability approach to development'},
+      {year:'2015',event:'UN Sustainable Development Goals adopted (17 goals)'},
+      {year:'2022',event:'India ranks 132 out of 191 in HDI'},
+    ],
+    flashcards: [
+      {q:'What is Per Capita Income?',a:'Total national income divided by total population. Average income per person. Used to compare economic development between countries.'},
+      {q:'What is HDI?',a:'Human Development Index — composite measure of income (GNI per capita), health (life expectancy), and education (mean years schooling).'},
+      {q:'What is sustainable development?',a:'Development that meets present needs without compromising future generations\' ability to meet their needs (Brundtland 1987).'},
+      {q:'Why is PCI alone insufficient to measure development?',a:'It ignores inequality, health, education, and environment. A country can have high average income but most people remain poor.'},
+      {q:'What is infant mortality rate?',a:'Number of children dying before age one per 1000 live births. India\'s IMR has improved but remains higher than developed countries.'},
+    ],
+    quiz: [
+      {q:'HDI was developed by:',opts:['World Bank','IMF','UNDP','WTO'],ans:2},
+      {q:'Which state has the highest HDI in India?',opts:['UP','Bihar','Kerala','Rajasthan'],ans:2},
+      {q:'Amartya Sen received the Nobel Prize in:',opts:['1991','1995','1998','2000'],ans:2},
+      {q:'Per Capita Income is calculated as:',opts:['Total income / Area','National income / Population','GDP / Exports','Tax revenue / Expenditure'],ans:1},
+      {q:'Sustainable Development Goals number:',opts:['7','10','15','17'],ans:3},
+    ],
+    reasoning: [
+      {q:'Why does Kerala have better human development indicators than Punjab, even though Punjab has higher per capita income?'},
+      {q:'Is economic growth sufficient for development? What else is needed?'},
+    ],
+    competency: 'Compare the development indicators (HDI, IMR, literacy, per capita income) of two Indian states. Identify the factors that explain the differences.',
+    activity: 'Calculate your family\'s "development" using non-income indicators: health access, education level, food security, environment.',
+    mapInfo: 'HDI map of India — which states rank highest and lowest? Identify geographical patterns.',
+    simulation: 'developmentSimulation'
+  },
+
+  {
+    id: 'e2', subject: 'Economics', icon: '🔧',
+    title: 'Sectors of the Indian Economy',
+    color: '#ef6c00',
+    concept: `The economy is divided into primary (agriculture, mining), secondary (manufacturing, construction), and tertiary (services) sectors. Employment and GDP contribution differ by sector. India has seen a shift from primary to tertiary sector. Organized and unorganized sectors affect workers differently.`,
+    keyPoints: [
+      'Primary: natural resources (agriculture, fishing, mining)',
+      'Secondary: manufacturing and processing (factories, construction)',
+      'Tertiary: services (banking, transport, education, trade)',
+      'India: ~54% GDP from tertiary, 26% primary, 20% secondary',
+      'Employment paradox: primary employs most but contributes least to GDP',
+      'NREGA: employment guarantee scheme for rural workers'
+    ],
+    timeline: [
+      {year:'1950',event:'Primary sector dominates Indian economy (57% of GDP)'},
+      {year:'1991',event:'Economic liberalization shifts focus to services'},
+      {year:'2005',event:'NREGA launched — employment guarantee for rural poor'},
+      {year:'2010',event:'Services sector exceeds 50% of India\'s GDP'},
+      {year:'2020',event:'COVID-19 severely impacts all sectors'},
+    ],
+    flashcards: [
+      {q:'What is the tertiary sector?',a:'The service sector including banking, insurance, transport, communication, education, health, trade. India\'s largest sector by GDP.'},
+      {q:'What is NREGA?',a:'National Rural Employment Guarantee Act (2005) — guarantees 100 days of paid employment per year to rural households. Prevents distress migration.'},
+      {q:'What is disguised unemployment?',a:'When more workers are employed than necessary (e.g., farming). If some leave, output doesn\'t fall. Common in Indian agriculture.'},
+      {q:'What is organized sector?',a:'Enterprises with regular employment, formal wages, and legal protections. Workers have job security, PF, ESI benefits.'},
+      {q:'What is unorganized sector?',a:'Informal work with low pay, no job security, no legal protections. About 93% of Indian workers are in this sector.'},
+    ],
+    quiz: [
+      {q:'NREGA guarantees how many days of employment?',opts:['50','75','100','150'],ans:2},
+      {q:'Which sector contributes most to India\'s GDP?',opts:['Primary','Secondary','Tertiary','None'],ans:2},
+      {q:'Agriculture is part of which sector?',opts:['Primary','Secondary','Tertiary','Quaternary'],ans:0},
+      {q:'Disguised unemployment is mainly found in:',opts:['Manufacturing','Agriculture','Banking','IT'],ans:1},
+      {q:'About what % of Indian workers are in the unorganized sector?',opts:['25%','50%','75%','93%'],ans:3},
+    ],
+    reasoning: [
+      {q:'Why do so many people work in agriculture even though it contributes less to GDP than the service sector?'},
+      {q:'How does NREGA help reduce poverty and seasonal unemployment in rural areas?'},
+    ],
+    competency: 'Survey 10 adults in your community about their occupation. Classify each into primary, secondary, or tertiary sector, and organized or unorganized sector.',
+    activity: 'Research how the COVID-19 pandemic differently affected workers in organized and unorganized sectors.',
+    mapInfo: 'Map showing sector-wise distribution of economy across Indian states (agricultural states vs industrial states).',
+    simulation: 'sectorSimulation'
+  },
+
+  {
+    id: 'e3', subject: 'Economics', icon: '💳',
+    title: 'Money and Credit',
+    color: '#f57c00',
+    concept: `Money as a medium of exchange removes the problems of barter. Modern banking allows deposits and loans. Credit can be formal (banks) or informal (moneylenders). Informal credit often traps poor people in debt. Self-Help Groups (SHGs) provide affordable credit to the poor, especially women.`,
+    keyPoints: [
+      'Money solves the "double coincidence of wants" problem of barter',
+      'Modern money: currency notes and coins issued by RBI',
+      'Banks: take deposits, give loans; create credit',
+      'Collateral: asset pledged as security for loans',
+      'Formal credit: banks, cooperatives, regulated, cheap',
+      'Informal credit: moneylenders, landlords, unregulated, expensive (36%+ interest)',
+      'SHGs: self-help groups for microfinance to poor women'
+    ],
+    timeline: [
+      {year:'1935',event:'Reserve Bank of India established'},
+      {year:'1969',event:'Bank nationalization — 14 banks nationalized'},
+      {year:'1992',event:'Economic reforms; private banks allowed'},
+      {year:'1975',event:'NABARD established for rural banking'},
+      {year:'2000s',event:'Microfinance and SHG movement expands'},
+      {year:'2016',event:'Jan Dhan Yojana: financial inclusion for poor'},
+    ],
+    flashcards: [
+      {q:'What is double coincidence of wants?',a:'A barter requirement: both parties must want what the other has. Money eliminates this problem.'},
+      {q:'What is collateral?',a:'An asset pledged as security for a loan. If borrower can\'t repay, bank takes the collateral. E.g., land, gold, house.'},
+      {q:'What is a Self-Help Group (SHG)?',a:'A group of 15-20 rural poor (mainly women) who save together and take loans from pooled funds at low interest. Empowers women.'},
+      {q:'What is the difference between formal and informal credit?',a:'Formal: banks, regulated, low interest (10-12%). Informal: moneylenders, no regulation, very high interest (36%+), exploitative.'},
+      {q:'What does RBI do?',a:'Reserve Bank of India: central bank; issues currency; regulates other banks; controls monetary policy; ensures banking stability.'},
+    ],
+    quiz: [
+      {q:'RBI stands for:',opts:['Rural Bank of India','Reserve Bank of India','Regional Bank of India','Retail Bank of India'],ans:1},
+      {q:'Collateral is required for:',opts:['Deposits','Loans','Withdrawals','Transfers'],ans:1},
+      {q:'Moneylenders charge ______ interest compared to banks:',opts:['Lower','Same','Higher','No'],ans:2},
+      {q:'Self-Help Groups primarily target:',opts:['Industrial workers','Urban rich','Rural poor women','Government employees'],ans:2},
+      {q:'Bank nationalization in India happened in:',opts:['1950','1969','1980','1991'],ans:1},
+    ],
+    reasoning: [
+      {q:'Why is informal credit harmful to poor people despite being easily accessible?'},
+      {q:'How do Self-Help Groups empower women economically and socially?'},
+    ],
+    competency: 'Sona needs ₹1 lakh for her daughter\'s education. Compare what would happen if she borrowed from (a) a bank, (b) a moneylender, (c) an SHG.',
+    activity: 'Research Jan Dhan Yojana. How many accounts have been opened? How does financial inclusion help the poor?',
+    mapInfo: 'Map showing bank penetration in India — which states have fewer banks per 1000 people?',
+    simulation: 'moneyFlowSimulation'
+  },
+
+  {
+    id: 'e4', subject: 'Economics', icon: '🌐',
+    title: 'Globalization and the Indian Economy',
+    color: '#e64a19',
+    concept: `Globalization is the process of rapid integration of countries through trade, investment, technology, and labour. MNCs drive globalization by setting up production in multiple countries. India's economy opened up in 1991. Globalization has benefited educated and skilled workers but hurt unprotected workers and small producers.`,
+    keyPoints: [
+      'MNCs: produce where cheap, sell where profitable — global supply chains',
+      'Foreign trade and investment link national economies',
+      'India 1991: LPG (Liberalization, Privatization, Globalization)',
+      'WTO: World Trade Organization ensures free trade globally',
+      'Winners: IT workers, exporters, consumers (cheaper goods)',
+      'Losers: small manufacturers, unorganized workers, local producers'
+    ],
+    timeline: [
+      {year:'1945',event:'GATT established; foundation of global trade order'},
+      {year:'1991',event:'India opens economy; LPG reforms'},
+      {year:'1995',event:'WTO replaces GATT; stronger trade rules'},
+      {year:'2001',event:'China joins WTO; global manufacturing shifts'},
+      {year:'2016',event:'Brexit; backlash against globalization grows'},
+      {year:'2020',event:'COVID-19 disrupts global supply chains'},
+    ],
+    flashcards: [
+      {q:'What is globalization?',a:'The process of rapid integration of countries through increased flow of goods, services, investment, technology, and people.'},
+      {q:'What is an MNC?',a:'Multinational Corporation — a company with operations in multiple countries. Drives foreign investment and global supply chains.'},
+      {q:'What was LPG in 1991?',a:'Liberalization (reduce government control), Privatization (sell public companies), Globalization (open to foreign investment). India\'s 1991 economic reform.'},
+      {q:'What does WTO do?',a:'World Trade Organization: sets rules for international trade, resolves trade disputes, promotes free trade by reducing tariffs and barriers.'},
+      {q:'What is fair globalization?',a:'Globalization that creates opportunities for all, distributes benefits fairly, and protects workers\' rights and local industries.'},
+    ],
+    quiz: [
+      {q:'LPG reforms in India were introduced in:',opts:['1947','1969','1991','2000'],ans:2},
+      {q:'WTO replaced which earlier organization?',opts:['IMF','World Bank','GATT','UNCTAD'],ans:2},
+      {q:'Which sector in India benefited most from globalization?',opts:['Agriculture','Small industries','IT and software services','Handicrafts'],ans:2},
+      {q:'MNCs primarily locate factories in developing countries to:',opts:['Avoid taxes','Reduce labour costs','Escape regulations','All of the above'],ans:3},
+      {q:'The main body that regulates world trade is:',opts:['IMF','World Bank','WTO','UNDP'],ans:2},
+    ],
+    reasoning: [
+      {q:'Has globalization been good or bad for India? Evaluate both sides with specific examples.'},
+      {q:'How can India ensure that the benefits of globalization reach the poor and marginalized communities?'},
+    ],
+    competency: 'A shoe factory in India is facing competition from cheaper imported shoes from China. As a policy maker, what trade policies would you recommend?',
+    activity: 'Look at the labels on 10 products in your home. Where are they made? What does this tell you about globalization?',
+    mapInfo: 'Global supply chain map: trace how a smartphone is manufactured using components from 10+ countries.',
+    simulation: 'globalizationSimulation'
+  },
+
+  {
+    id: 'e5', subject: 'Economics', icon: '🛒',
+    title: 'Consumer Rights',
+    color: '#bf360c',
+    concept: `Consumer rights protect buyers from exploitation. The Consumer Protection Act 1986 (updated 2019) gives consumers the right to information, safety, choice, redressal, and representation. COPRA established District, State, and National Consumer Courts. Consumer awareness is crucial to exercise these rights effectively.`,
+    keyPoints: [
+      'Right to Safety: protection from hazardous goods',
+      'Right to Information: know product details before buying',
+      'Right to Choose: fair competition and variety',
+      'Right to Representation: voice in consumer forums',
+      'Right to Redressal: compensation for harm or fraud',
+      'Right to Consumer Education: awareness of rights',
+      'COPRA 1986 and Consumer Protection Act 2019',
+      'ISI and Agmark: quality certification marks'
+    ],
+    timeline: [
+      {year:'1986',event:'Consumer Protection Act (COPRA) enacted in India'},
+      {year:'1990',event:'Consumer courts established across India'},
+      {year:'2000',event:'Consumer awareness campaigns gain momentum'},
+      {year:'2019',event:'Consumer Protection Act 2019 replaces COPRA; includes e-commerce'},
+      {year:'2020',event:'New rules cover online shopping platforms'},
+    ],
+    flashcards: [
+      {q:'What is COPRA?',a:'Consumer Protection Act 1986 — India\'s first major consumer protection law establishing consumer courts and consumer rights.'},
+      {q:'What is the three-tier consumer court system?',a:'District Consumer Forum → State Consumer Commission → National Consumer Disputes Redressal Commission. Appeals go upward.'},
+      {q:'What is ISI mark?',a:'Indian Standards Institute mark — quality certification for industrial products like electrical goods, cement. Ensures safety standards.'},
+      {q:'What is AGMARK?',a:'Agricultural mark — quality certification for agricultural products like honey, flour, ghee. Ensures purity and quality.'},
+      {q:'What is consumer exploitation?',a:'When sellers cheat buyers through short weighting, adulteration, false advertising, overcharging, or selling unsafe products.'},
+    ],
+    quiz: [
+      {q:'COPRA stands for:',opts:['Consumer Protection Act','Consumer Price Rate Act','Commerce Protection Act','Consumer Policy Reform Act'],ans:0},
+      {q:'ISI mark certifies:',opts:['Agricultural products','Industrial product quality','Service quality','Food products only'],ans:1},
+      {q:'National Consumer Disputes Redressal Commission handles cases worth:',opts:['Up to ₹20 lakh','₹20 lakh to ₹1 crore','Above ₹1 crore','Any amount'],ans:2},
+      {q:'The Consumer Protection Act 2019 added which sector?',opts:['Agriculture','Healthcare only','E-commerce and online shopping','Real estate'],ans:2},
+      {q:'World Consumer Rights Day is on:',opts:['January 26','March 15','August 15','October 2'],ans:1},
+    ],
+    reasoning: [
+      {q:'Why is consumer awareness more important in the age of online shopping? What new risks do consumers face?'},
+      {q:'A company advertises its health drink as "scientifically proven to increase height." How would a consumer evaluate this claim?'},
+    ],
+    competency: 'A local shop sold you expired milk. Draft a complaint to the District Consumer Forum following proper procedure.',
+    activity: 'Visit a local market and check 5 products for: expiry date, MRP, ingredients, quality marks (ISI/AGMARK). Report your findings.',
+    mapInfo: 'Map showing consumer court locations across India — where can citizens file complaints?',
+    simulation: 'consumerRightsSimulation'
+  }
+];
+
+// ===== ALL QUESTIONS POOL =====
+const ALL_QUESTIONS = CHAPTERS.flatMap(ch =>
+  ch.quiz.map(q => ({...q, chapter: ch.title, subject: ch.subject}))
+);
+
+// ===== STATE =====
+let state = {
+  currentFilter: 'All',
+  currentChapterId: null,
+  currentTab: 'concept',
+  flashcardIndex: 0,
+  flashcardFlipped: false,
+  quizAnswers: {},
+  quizSubmitted: false,
+  rqCurrentQuestion: null
+};
+
+// ===== LOCAL STORAGE =====
+function saveData(key, val) { try { localStorage.setItem('sstApp_'+key, JSON.stringify(val)); } catch(e){} }
+function loadData(key, def) { try { const d = localStorage.getItem('sstApp_'+key); return d ? JSON.parse(d) : def; } catch(e){ return def; } }
+
+let progress = loadData('progress', {});
+let quizScores = loadData('quizScores', {});
+let notes = loadData('notes', []);
+let bookmarks = loadData('bookmarks', []);
+
+// ===== PARTICLES =====
+function createParticles() {
+  const splash = document.getElementById('splash');
+  const colors = ['#ffd600','#ff6f00','#3949ab','#00897b','#d81b60'];
+  for(let i=0;i<20;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random()*30+10;
+    p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*10+8}s;animation-delay:${Math.random()*5}s;`;
+    splash.appendChild(p);
+  }
+}
+createParticles();
+
+// ===== START APP =====
+function startApp() {
+  document.getElementById('splash').style.opacity = '0';
+  document.getElementById('splash').style.transform = 'scale(1.1)';
+  document.getElementById('splash').style.transition = 'all 0.6s ease';
+  setTimeout(() => {
+    document.getElementById('splash').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    initApp();
+  }, 600);
+}
+
+function initApp() {
+  renderChapters();
+  renderQuizChapterList();
+  renderNotes();
+  renderBookmarks();
+  renderProgress();
+  updateHomeStats();
+  populateNoteChapterSelect();
+}
+
+// ===== NAVIGATION =====
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const pg = document.getElementById('page-'+page);
+  if(pg) { pg.classList.add('active'); }
+  const nav = document.getElementById('nav-'+page);
+  if(nav) nav.classList.add('active');
+  if(page === 'chapters') { document.getElementById('page-chapter-detail').classList.remove('active'); }
+  if(page === 'progress') renderProgress();
+  if(page === 'notes') renderNotes();
+  if(page === 'bookmarks') renderBookmarks();
+  if(page === 'random') newRandomQuestion();
+}
+
+function filterChapters(subject, el) {
+  state.currentFilter = subject;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  if(el) el.classList.add('active');
+  renderChapters();
+  showPage('chapters');
+  // Scroll to chapters
+  document.getElementById('page-chapters').scrollTop = 0;
+}
+
+// ===== HOME STATS =====
+function updateHomeStats() {
+  const done = Object.keys(progress).filter(k=>progress[k]).length;
+  const quizTaken = Object.keys(quizScores).length;
+  const avgScore = quizTaken ? Math.round(Object.values(quizScores).reduce((a,b)=>a+b,0)/quizTaken) : 0;
+  document.getElementById('statChapters').textContent = done;
+  document.getElementById('statQuizzes').textContent = quizTaken;
+  document.getElementById('statScore').textContent = avgScore+'%';
+  const pct = Math.round((done/CHAPTERS.length)*100);
+  document.getElementById('overallProgress').style.width = pct+'%';
+}
+
+// ===== RENDER CHAPTERS =====
+function renderChapters(search='') {
+  const list = document.getElementById('chapterList');
+  let filtered = CHAPTERS;
+  if(state.currentFilter !== 'All') filtered = filtered.filter(c=>c.subject===state.currentFilter);
+  if(search) filtered = filtered.filter(c=>c.title.toLowerCase().includes(search.toLowerCase()));
+  list.innerHTML = filtered.map(ch => {
+    const done = progress[ch.id] ? '✅ Completed' : '';
+    return `<div class="chapter-card animate-in" onclick="openChapter('${ch.id}')">
+      <div class="ch-icon" style="background:${ch.color}20;color:${ch.color}">${ch.icon}</div>
+      <div class="ch-info">
+        <div class="ch-title">${ch.title}</div>
+        <div class="ch-subject">${ch.subject}</div>
+        ${done?`<div class="ch-progress ch-done">${done}</div>`:''}
+        ${quizScores[ch.id]!==undefined?`<div class="ch-progress" style="color:var(--gold)">Quiz: ${quizScores[ch.id]}%</div>`:''}
+      </div>
+      <span class="ch-arrow">›</span>
+    </div>`;
+  }).join('') || '<div class="empty-state"><div class="empty-icon">🔍</div><p>No chapters found</p></div>';
+}
+
+function searchChapters(val) { renderChapters(val); }
+
+// ===== OPEN CHAPTER =====
+function openChapter(id) {
+  state.currentChapterId = id;
+  state.currentTab = 'concept';
+  state.flashcardIndex = 0;
+  state.flashcardFlipped = false;
+  state.quizAnswers = {};
+  state.quizSubmitted = false;
+  const ch = CHAPTERS.find(c=>c.id===id);
+  const content = document.getElementById('chapterDetailContent');
+  const bm = bookmarks.includes(id);
+
+  content.innerHTML = `
+    <div class="ch-detail-header" style="background:linear-gradient(135deg,${ch.color},${ch.color}aa)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div style="font-size:0.75rem;opacity:0.7;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">${ch.subject} ${ch.icon}</div>
+          <h2>${ch.title}</h2>
+        </div>
+        <button class="bookmark-btn ${bm?'active':''}" id="bmBtn" onclick="toggleBookmark('${id}')">${bm?'🔖':'🏷️'}</button>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('concept',this)">📖 Concept</button>
+      <button class="tab-btn" onclick="switchTab('diagram',this)">🔷 Diagram</button>
+      <button class="tab-btn" onclick="switchTab('timeline',this)">📅 Timeline</button>
+      <button class="tab-btn" onclick="switchTab('flashcards',this)">🃏 Flashcards</button>
+      <button class="tab-btn" onclick="switchTab('quiz',this)">❓ Quiz</button>
+      <button class="tab-btn" onclick="switchTab('reasoning',this)">🧩 Think</button>
+      <button class="tab-btn" onclick="switchTab('activity',this)">🎯 Activity</button>
+      <button class="tab-btn" onclick="switchTab('map',this)">🗺️ Map Lab</button>
+    </div>
+    <div id="tab-concept" class="tab-content active">${renderConcept(ch)}</div>
+    <div id="tab-diagram" class="tab-content">${renderDiagram(ch)}</div>
+    <div id="tab-timeline" class="tab-content">${renderTimeline(ch)}</div>
+    <div id="tab-flashcards" class="tab-content">${renderFlashcards(ch)}</div>
+    <div id="tab-quiz" class="tab-content" id="tabQuiz">${renderQuiz(ch)}</div>
+    <div id="tab-reasoning" class="tab-content">${renderReasoning(ch)}</div>
+    <div id="tab-activity" class="tab-content">${renderActivity(ch)}</div>
+    <div id="tab-map" class="tab-content">${renderMapLab(ch)}</div>
+  `;
+
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-chapter-detail').classList.add('active');
+  document.getElementById('page-chapter-detail').scrollTop = 0;
+}
+
+function closeChapterDetail() {
+  document.getElementById('page-chapter-detail').classList.remove('active');
+  document.getElementById('page-chapters').classList.add('active');
+}
+
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+  if(tab==='flashcards') renderCurrentFlashcard();
+}
+
+// ===== RENDER CONCEPT =====
+function renderConcept(ch) {
+  return `
+    <div class="concept-box">
+      <h4>📌 Overview</h4>
+      <p>${ch.concept}</p>
+    </div>
+    <div class="concept-box">
+      <h4>🔑 Key Points</h4>
+      <ul>${ch.keyPoints.map(k=>`<li>${k}</li>`).join('')}</ul>
+    </div>
+  `;
+}
+
+// ===== RENDER DIAGRAM =====
+function renderDiagram(ch) {
+  const diagrams = {
+    'History': `<div class="flow-diagram">
+      <div class="flow-box">Nationalism Idea</div><div class="flow-arrow">↓</div>
+      <div class="flow-row"><div class="flow-box sm green">Cultural Movements</div><div class="flow-box sm orange">Political Revolts</div></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box red">Nation-State Formation</div>
+    </div>`,
+    'Geography': `<div class="flow-diagram">
+      <div class="flow-box">Natural Resources</div><div class="flow-arrow">↓</div>
+      <div class="flow-row"><div class="flow-box sm green">Renewable</div><div class="flow-box sm orange">Non-Renewable</div></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box">Sustainable Use &amp; Conservation</div>
+    </div>`,
+    'Political Science': `<div class="flow-diagram">
+      <div class="flow-box">Democratic Government</div><div class="flow-arrow">↓</div>
+      <div class="flow-row"><div class="flow-box sm green">Legislature</div><div class="flow-box sm orange">Executive</div><div class="flow-box sm red">Judiciary</div></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box">Checks &amp; Balances</div>
+    </div>`,
+    'Economics': `<div class="flow-diagram">
+      <div class="flow-box">Economic Development</div><div class="flow-arrow">↓</div>
+      <div class="flow-row"><div class="flow-box sm green">Income Growth</div><div class="flow-box sm orange">Human Development</div></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box">Sustainable Progress</div>
+    </div>`
+  };
+  return `<div class="diagram-wrap">
+    <div class="diagram-title">🔷 Conceptual Flow: ${ch.title}</div>
+    ${diagrams[ch.subject] || '<p style="color:var(--text2)">Diagram coming soon</p>'}
+  </div>
+  <div class="concept-box">
+    <h4>📌 Chapter Summary in One Line</h4>
+    <p style="font-weight:600;font-size:0.9rem">${ch.concept.substring(0,100)}...</p>
+  </div>`;
+}
+
+// ===== RENDER TIMELINE =====
+function renderTimeline(ch) {
+  if(!ch.timeline||!ch.timeline.length) return '<div class="empty-state"><div class="empty-icon">📅</div><p>No timeline data</p></div>';
+  return `<div class="diagram-wrap">
+    <div class="diagram-title">📅 Historical Timeline</div>
+    <div class="timeline">
+      ${ch.timeline.map(t=>`<div class="tl-item"><div class="tl-dot"></div><div class="tl-year">${t.year}</div><div class="tl-event">${t.event}</div></div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ===== FLASHCARDS =====
+function renderFlashcards(ch) {
+  return `<div class="flashcard-wrap" id="flashcardWrap">
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="card-front"><div>
+        <div class="card-q" id="cardQ">${ch.flashcards[0].q}</div>
+        <div class="card-hint">Tap to reveal answer</div>
+      </div></div>
+      <div class="card-back"><div>
+        <div class="card-a" id="cardA">${ch.flashcards[0].a}</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="card-nav">
+    <button class="card-nav-btn" onclick="prevCard()">‹ Prev</button>
+    <span class="card-counter" id="cardCounter">1 / ${ch.flashcards.length}</span>
+    <button class="card-nav-btn" onclick="nextCard()">Next ›</button>
+  </div>`;
+}
+
+function renderCurrentFlashcard() {
+  const ch = CHAPTERS.find(c=>c.id===state.currentChapterId);
+  if(!ch) return;
+  const fc = ch.flashcards[state.flashcardIndex];
+  const card = document.getElementById('flashcard');
+  if(!card) return;
+  if(state.flashcardFlipped) { card.classList.remove('flipped'); state.flashcardFlipped = false; }
+  document.getElementById('cardQ').textContent = fc.q;
+  document.getElementById('cardA').textContent = fc.a;
+  document.getElementById('cardCounter').textContent = `${state.flashcardIndex+1} / ${ch.flashcards.length}`;
+}
+
+function flipCard() {
+  const card = document.getElementById('flashcard');
+  if(!card) return;
+  state.flashcardFlipped = !state.flashcardFlipped;
+  card.classList.toggle('flipped', state.flashcardFlipped);
+}
+
+function nextCard() {
+  const ch = CHAPTERS.find(c=>c.id===state.currentChapterId);
+  state.flashcardIndex = (state.flashcardIndex+1) % ch.flashcards.length;
+  renderCurrentFlashcard();
+}
+
+function prevCard() {
+  const ch = CHAPTERS.find(c=>c.id===state.currentChapterId);
+  state.flashcardIndex = (state.flashcardIndex-1+ch.flashcards.length) % ch.flashcards.length;
+  renderCurrentFlashcard();
+}
+
+// ===== QUIZ =====
+function renderQuiz(ch) {
+  return `<div id="quizContent">${buildQuizHTML(ch)}</div>`;
+}
+
+function buildQuizHTML(ch) {
+  return ch.quiz.map((q,qi)=>`
+    <div class="quiz-question">
+      <div class="quiz-q-text">Q${qi+1}. ${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((opt,oi)=>`
+          <button class="quiz-opt" id="opt_${qi}_${oi}" onclick="selectOpt(${qi},${oi},${q.ans})">${String.fromCharCode(65+oi)}. ${opt}</button>
+        `).join('')}
+      </div>
+      <div class="quiz-feedback" id="fb_${qi}"></div>
+    </div>
+  `).join('')+`<button class="quiz-submit" onclick="submitQuiz('${ch.id}')">Submit Quiz 🚀</button>`;
+}
+
+function selectOpt(qi, oi, correct) {
+  if(state.quizSubmitted) return;
+  state.quizAnswers[qi] = oi;
+  // Clear row selection
+  document.querySelectorAll(`[id^="opt_${qi}_"]`).forEach(b=>{b.style.background='';b.style.borderColor='transparent';});
+  const btn = document.getElementById(`opt_${qi}_${oi}`);
+  btn.style.background = 'rgba(57,73,171,0.2)';
+  btn.style.borderColor = 'var(--primary-light)';
+}
+
+function submitQuiz(chId) {
+  state.quizSubmitted = true;
+  const ch = CHAPTERS.find(c=>c.id===chId);
+  let correct = 0;
+  ch.quiz.forEach((q,qi)=>{
+    const chosen = state.quizAnswers[qi];
+    const fb = document.getElementById(`fb_${qi}`);
+    document.querySelectorAll(`[id^="opt_${qi}_"]`).forEach(b=>b.disabled=true);
+    if(chosen===undefined){
+      if(fb) fb.textContent = '⚠️ Not answered';
+    } else {
+      const chosenBtn = document.getElementById(`opt_${qi}_${chosen}`);
+      const correctBtn = document.getElementById(`opt_${qi}_${q.ans}`);
+      if(chosen===q.ans){
+        correct++;
+        chosenBtn.classList.add('correct');
+        if(fb){ fb.textContent='✅ Correct!'; fb.style.color='var(--green)'; }
+      } else {
+        chosenBtn.classList.add('wrong');
+        if(correctBtn) correctBtn.classList.add('correct');
+        if(fb){ fb.innerHTML=`❌ Wrong. Correct: <strong>${String.fromCharCode(65+q.ans)}</strong>`; fb.style.color='var(--red)'; }
+      }
+    }
+  });
+  const pct = Math.round((correct/ch.quiz.length)*100);
+  quizScores[chId] = pct;
+  saveData('quizScores', quizScores);
+  if(pct>=60){ progress[chId]=true; saveData('progress',progress); updateHomeStats(); }
+  // Append score
+  const qc = document.getElementById('quizContent');
+  if(qc) qc.insertAdjacentHTML('beforeend', `
+    <div class="quiz-score animate-in">
+      <div class="score-val">${pct}%</div>
+      <div class="score-label">${correct}/${ch.quiz.length} correct ${pct>=80?'🏆 Excellent!':pct>=60?'👍 Good!':'📚 Keep Studying!'}</div>
+      <button class="quiz-submit" style="margin-top:16px" onclick="retryQuiz('${chId}')">🔄 Retry Quiz</button>
+    </div>
+  `);
+  showToast(`Quiz done! Score: ${pct}%`);
+  updateHomeStats();
+}
+
+function retryQuiz(chId) {
+  state.quizAnswers = {};
+  state.quizSubmitted = false;
+  const ch = CHAPTERS.find(c=>c.id===chId);
+  document.getElementById('quizContent').innerHTML = buildQuizHTML(ch);
+}
+
+// ===== REASONING =====
+function renderReasoning(ch) {
+  return `
+    ${ch.reasoning.map((r,i)=>`
+      <div class="reasoning-box">
+        <h4>🧩 Think & Reflect ${i+1}</h4>
+        <p>${r.q}</p>
+        ${r.hint?`<p style="font-size:0.78rem;color:var(--accent2);margin-bottom:8px">Hint: ${r.hint}</p>`:''}
+        <textarea class="reasoning-textarea" placeholder="Write your answer here..." id="reasoningAns_${i}"></textarea>
+      </div>
+    `).join('')}
+    <div class="concept-box" style="border-left:4px solid var(--accent3)">
+      <h4>🏆 Competency Challenge</h4>
+      <p>${ch.competency}</p>
+    </div>
+  `;
+}
+
+// ===== ACTIVITY =====
+function renderActivity(ch) {
+  return `
+    <div class="activity-box">
+      <h4>🎯 Mini Activity</h4>
+      <p>${ch.activity}</p>
+    </div>
+    <div style="height:12px"></div>
+    <div class="concept-box">
+      <h4>📖 NEP 2020 Connects</h4>
+      <ul>
+        <li>Experiential learning through hands-on activity</li>
+        <li>Critical thinking through analysis</li>
+        <li>Competency-based assessment via reflection</li>
+      </ul>
+    </div>
+  `;
+}
+
+// ===== MAP LAB =====
+function renderMapLab(ch) {
+  const mapSVG = generateMapSVG(ch);
+  return `<div class="map-container">
+    <div class="map-title">🗺️ Map Lab: ${ch.title}</div>
+    ${mapSVG}
+    <div class="map-info" id="mapInfo">${ch.mapInfo}</div>
+  </div>
+  ${renderSimulation(ch)}`;
+}
+
+function generateMapSVG(ch) {
+  if(ch.subject==='Geography' || ch.id==='ps2') {
+    return `<svg class="india-map-svg" viewBox="0 0 400 460" xmlns="http://www.w3.org/2000/svg" style="background:#0d47a1;border-radius:12px;max-width:100%">
+      <defs>
+        <radialGradient id="oceanGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" style="stop-color:#1565c0"/>
+          <stop offset="100%" style="stop-color:#0a2d6e"/>
+        </radialGradient>
+      </defs>
+      <rect width="400" height="460" fill="url(#oceanGrad)" rx="12"/>
+      <!-- Simplified India outline -->
+      <path d="M130,30 L200,25 L280,40 L320,80 L340,130 L350,180 L330,240 L310,290 L270,330 L240,370 L220,420 L200,450 L180,420 L160,370 L130,330 L90,290 L70,240 L60,190 L70,130 L90,80 Z" 
+            fill="#43a047" stroke="#81c784" stroke-width="2" opacity="0.9"
+            onclick="document.getElementById('mapInfo').textContent='India — population 1.4 billion, 28 states, 8 UTs'"/>
+      <!-- Major cities -->
+      <circle cx="170" cy="110" r="5" fill="#ffd600" onclick="document.getElementById('mapInfo').textContent='New Delhi — Capital of India'"/>
+      <circle cx="130" cy="230" r="4" fill="#ff6f00" onclick="document.getElementById('mapInfo').textContent='Mumbai — Financial capital'"/>
+      <circle cx="250" cy="230" r="4" fill="#ff6f00" onclick="document.getElementById('mapInfo').textContent='Kolkata — Eastern India major city'"/>
+      <circle cx="190" cy="350" r="4" fill="#ff6f00" onclick="document.getElementById('mapInfo').textContent='Chennai — Southern India major city'"/>
+      <circle cx="200" cy="290" r="4" fill="#ff6f00" onclick="document.getElementById('mapInfo').textContent='Hyderabad — IT hub of South'"/>
+      <circle cx="160" cy="310" r="4" fill="#d81b60" onclick="document.getElementById('mapInfo').textContent='Bengaluru — Silicon Valley of India'"/>
+      <circle cx="150" cy="90" r="3" fill="#00e5ff" onclick="document.getElementById('mapInfo').textContent='Amritsar — Gateway to Punjab'"/>
+      <!-- Labels -->
+      <text x="165" y="105" fill="#ffd600" font-size="9" font-family="Arial">Delhi</text>
+      <text x="125" y="225" fill="white" font-size="8" font-family="Arial">Mumbai</text>
+      <text x="245" y="225" fill="white" font-size="8" font-family="Arial">Kolkata</text>
+      <text x="185" y="345" fill="white" font-size="8" font-family="Arial">Chennai</text>
+      <text x="10" y="450" fill="rgba(255,255,255,0.5)" font-size="7" font-family="Arial">Click on cities to learn more</text>
+      <text x="10" y="20" fill="rgba(255,255,255,0.7)" font-size="9" font-family="Arial">Interactive Map of India</text>
+    </svg>`;
+  }
+  if(ch.subject==='History') {
+    return `<svg class="india-map-svg" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" style="background:#1a237e;border-radius:12px">
+      <text x="20" y="30" fill="white" font-size="12" font-weight="bold" font-family="Arial">Europe — 1815 to 1871</text>
+      <rect x="60" y="50" width="80" height="50" fill="#ef5350" rx="5" onclick="document.getElementById('mapInfo').textContent='German States — 39 states unified in 1871 under Bismarck'"/>
+      <text x="70" y="80" fill="white" font-size="9" font-family="Arial">Germany</text>
+      <rect x="60" y="120" width="70" height="50" fill="#42a5f5" rx="5" onclick="document.getElementById('mapInfo').textContent='Austria-Hungary — Multi-ethnic empire that resisted nationalism'"/>
+      <text x="65" y="150" fill="white" font-size="9" font-family="Arial">Austria</text>
+      <rect x="150" y="70" width="60" height="80" fill="#66bb6a" rx="5" onclick="document.getElementById('mapInfo').textContent='Italy — Unified 1861 under Cavour (north) and Garibaldi (south)'"/>
+      <text x="155" y="115" fill="white" font-size="9" font-family="Arial">Italy</text>
+      <rect x="20" y="70" width="60" height="80" fill="#ffa726" rx="5" onclick="document.getElementById('mapInfo').textContent='France — French Revolution 1789 spread nationalist ideas across Europe'"/>
+      <text x="30" y="115" fill="white" font-size="9" font-family="Arial">France</text>
+      <rect x="230" y="60" width="80" height="80" fill="#ab47bc" rx="5" onclick="document.getElementById('mapInfo').textContent='Ottoman Empire — Multi-ethnic empire in decline; Balkan nationalism grew'"/>
+      <text x="240" y="105" fill="white" font-size="9" font-family="Arial">Balkans</text>
+      <text x="10" y="235" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Arial">Click on regions to learn more</text>
+    </svg>`;
+  }
+  // Default economics/generic map
+  return `<svg class="india-map-svg" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" style="background:#1b5e20;border-radius:12px">
+    <text x="20" y="30" fill="white" font-size="12" font-weight="bold" font-family="Arial">Economic Activity Map</text>
+    <circle cx="100" cy="120" r="40" fill="#ef5350" opacity="0.7" onclick="document.getElementById('mapInfo').textContent='Primary Sector: Agriculture, Mining, Fishing'"/>
+    <text x="65" y="125" fill="white" font-size="9" font-family="Arial">Primary</text>
+    <circle cx="220" cy="120" r="40" fill="#42a5f5" opacity="0.7" onclick="document.getElementById('mapInfo').textContent='Secondary Sector: Manufacturing, Construction, Processing'"/>
+    <text x="190" y="125" fill="white" font-size="9" font-family="Arial">Secondary</text>
+    <circle cx="340" cy="120" r="40" fill="#ffa726" opacity="0.7" onclick="document.getElementById('mapInfo').textContent='Tertiary Sector: Services, Banking, Trade, IT'"/>
+    <text x="315" y="125" fill="white" font-size="9" font-family="Arial">Tertiary</text>
+    <text x="10" y="235" fill="rgba(255,255,255,0.5)" font-size="8" font-family="Arial">Click on sectors to learn more</text>
+  </svg>`;
+}
+
+// ===== SIMULATION =====
+function renderSimulation(ch) {
+  let sim = '';
+  if(ch.subject==='History') {
+    sim = `<div class="simulation-box">
+      <div class="sim-header">🎬 History Simulation: Timeline Explorer</div>
+      <div class="sim-body">
+        <div id="simHistory" class="sim-canvas" style="display:flex;align-items:center;overflow-x:auto;gap:0;padding:10px;">
+          ${ch.timeline.map((t,i)=>`
+            <div onclick="this.style.background='rgba(57,73,171,0.3)'" style="cursor:pointer;flex-shrink:0;text-align:center;padding:8px 12px;min-width:100px">
+              <div style="width:14px;height:14px;border-radius:50%;background:${['#ffd600','#ff6f00','#d81b60','#3949ab','#00897b','#56d364'][i%6]};margin:0 auto 6px;box-shadow:0 0 10px currentColor"></div>
+              <div style="font-size:0.7rem;font-weight:700;color:var(--accent)">${t.year}</div>
+              <div style="font-size:0.65rem;color:var(--text2);line-height:1.3;max-width:90px">${t.event.substring(0,40)}${t.event.length>40?'...':''}</div>
+            </div>
+            ${i<ch.timeline.length-1?`<div style="flex-shrink:0;width:30px;height:2px;background:linear-gradient(90deg,var(--primary),var(--accent2));margin-top:-20px"></div>`:''}
+          `).join('')}
+        </div>
+      </div>
+    </div>`;
+  } else if(ch.subject==='Geography') {
+    sim = `<div class="simulation-box">
+      <div class="sim-header">🌍 Geography Simulation: Resource Explorer</div>
+      <div class="sim-body">
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+          ${[['🌾','Agriculture','Primary','Employs 50% of India'],['⛏️','Mining','Primary','Iron ore, coal, mica'],['🏭','Industries','Secondary','Manufacturing sector'],['💻','IT Services','Tertiary','Fastest growing sector'],['🚂','Transport','Tertiary','Railways lifeline'],['🌱','Conservation','Sustainable','Future priority']].map(([icon,name,type,desc])=>`
+            <div style="background:var(--bg3);border-radius:10px;padding:10px;cursor:pointer;transition:all 0.2s" onclick="this.style.background='rgba(0,137,123,0.2)';document.getElementById('mapInfo').textContent='${name}: ${desc}'">
+              <div style="font-size:1.5rem">${icon}</div>
+              <div style="font-size:0.8rem;font-weight:600">${name}</div>
+              <div style="font-size:0.7rem;color:var(--text2)">${type}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>`;
+  } else if(ch.subject==='Political Science') {
+    sim = `<div class="simulation-box">
+      <div class="sim-header">⚖️ Democracy Simulation: Government Structure</div>
+      <div class="sim-body">
+        <div style="text-align:center">
+          <div style="display:inline-block;background:var(--primary);color:white;padding:10px 20px;border-radius:10px;margin:5px;cursor:pointer" onclick="document.getElementById('mapInfo').textContent='Legislature: Lok Sabha and Rajya Sabha make laws. Parliament is supreme.'">🏛️ Legislature</div>
+          <div style="display:inline-block;background:var(--accent);color:white;padding:10px 20px;border-radius:10px;margin:5px;cursor:pointer" onclick="document.getElementById('mapInfo').textContent='Executive: Cabinet and PM implement laws. Accountable to Parliament.'">⚙️ Executive</div>
+          <div style="display:inline-block;background:var(--accent2);color:white;padding:10px 20px;border-radius:10px;margin:5px;cursor:pointer" onclick="document.getElementById('mapInfo').textContent='Judiciary: Supreme Court and High Courts interpret laws and protect rights.'">⚖️ Judiciary</div>
+        </div>
+        <div style="margin-top:12px;padding:10px;background:var(--bg3);border-radius:10px;text-align:center">
+          <div style="font-size:0.8rem;color:var(--text2)">Separation of Powers keeps democracy healthy</div>
+          <div style="font-size:0.75rem;color:var(--text2);margin-top:4px">Click each organ to learn its role</div>
+        </div>
+      </div>
+    </div>`;
+  } else {
+    sim = `<div class="simulation-box">
+      <div class="sim-header">💹 Economics Simulation: Sector Flow</div>
+      <div class="sim-body">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          ${[['🌾 Primary','Agriculture, Mining','GDP: 16%','Employs: 50%','#43a047'],['🏭 Secondary','Manufacturing','GDP: 29%','Employs: 25%','#1565c0'],['💻 Tertiary','Services, IT','GDP: 55%','Employs: 25%','#6a1b9a']].map(([name,sub,gdp,emp,col])=>`
+            <div style="background:${col};border-radius:10px;padding:12px;color:white;cursor:pointer" onclick="document.getElementById('mapInfo').textContent='${name}: ${sub} — ${gdp} of GDP, ${emp} employment'">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div><div style="font-weight:700">${name}</div><div style="font-size:0.75rem;opacity:0.8">${sub}</div></div>
+                <div style="text-align:right"><div style="font-size:0.8rem">${gdp}</div><div style="font-size:0.75rem;opacity:0.8">${emp}</div></div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>`;
+  }
+  return sim;
+}
+
+// ===== QUIZ CHAPTER LIST (Quiz Page) =====
+function renderQuizChapterList() {
+  const list = document.getElementById('quizChapterList');
+  list.innerHTML = CHAPTERS.map(ch=>`
+    <div class="chapter-card animate-in" onclick="openChapterQuiz('${ch.id}')">
+      <div class="ch-icon" style="background:${ch.color}20;color:${ch.color}">${ch.icon}</div>
+      <div class="ch-info">
+        <div class="ch-title">${ch.title}</div>
+        <div class="ch-subject">${ch.subject} · 5 Questions</div>
+        ${quizScores[ch.id]!==undefined?`<div class="ch-progress" style="color:var(--gold)">Last score: ${quizScores[ch.id]}%</div>`:'<div class="ch-progress" style="color:var(--text2)">Not attempted</div>'}
+      </div>
+      <span class="ch-arrow">›</span>
+    </div>
+  `).join('');
+}
+
+function openChapterQuiz(id) {
+  openChapter(id);
+  // Switch to quiz tab after small delay
+  setTimeout(()=>{
+    const quizTabBtn = document.querySelector('.tab-btn:nth-child(5)');
+    if(quizTabBtn) quizTabBtn.click();
+  },100);
+}
+
+// ===== PROGRESS =====
+function renderProgress() {
+  const done = Object.keys(progress).filter(k=>progress[k]).length;
+  const quizTaken = Object.keys(quizScores).length;
+  const avgScore = quizTaken ? Math.round(Object.values(quizScores).reduce((a,b)=>a+b,0)/quizTaken) : 0;
+  document.getElementById('pg-chapters').textContent = `${done}/${CHAPTERS.length}`;
+  document.getElementById('pg-quizzes').textContent = quizTaken;
+  document.getElementById('pg-avg').textContent = avgScore+'%';
+  document.getElementById('pg-notes').textContent = notes.length;
+
+  const badges = [
+    {icon:'🌱',name:'First Steps',condition:done>=1,desc:'Complete first chapter'},
+    {icon:'📚',name:'Bookworm',condition:done>=5,desc:'Complete 5 chapters'},
+    {icon:'🏛️',name:'Historian',condition:Object.keys(quizScores).some(k=>k.startsWith('h')&&quizScores[k]>=80),desc:'Score 80%+ in History'},
+    {icon:'🌍',name:'Geographer',condition:Object.keys(quizScores).some(k=>k.startsWith('g')&&quizScores[k]>=80),desc:'Score 80%+ in Geography'},
+    {icon:'⚖️',name:'Political Mind',condition:Object.keys(quizScores).some(k=>k.startsWith('p')&&quizScores[k]>=80),desc:'Score 80%+ in Pol Sci'},
+    {icon:'💹',name:'Economist',condition:Object.keys(quizScores).some(k=>k.startsWith('e')&&quizScores[k]>=80),desc:'Score 80%+ in Economics'},
+    {icon:'🏆',name:'Champion',condition:avgScore>=80&&quizTaken>=10,desc:'10 quizzes, 80%+ avg'},
+    {icon:'🎯',name:'Perfect Score',condition:Object.values(quizScores).some(s=>s===100),desc:'Score 100% in any quiz'},
+    {icon:'✍️',name:'Note Taker',condition:notes.length>=3,desc:'Save 3+ notes'},
+  ];
+
+  const bg = document.getElementById('badgeGrid');
+  bg.innerHTML = badges.map(b=>`
+    <div class="badge-card ${b.condition?'earned':''}">
+      <div class="badge-icon" style="opacity:${b.condition?1:0.3}">${b.icon}</div>
+      <div class="badge-name">${b.name}</div>
+      ${b.condition?'<div style="font-size:0.6rem;color:var(--gold)">✅ Earned</div>':'<div style="font-size:0.6rem;color:var(--text2)">${b.desc}</div>'}
+    </div>
+  `).join('');
+}
+
+// ===== NOTES =====
+function populateNoteChapterSelect() {
+  const sel = document.getElementById('noteChapterSelect');
+  CHAPTERS.forEach(ch=>{
+    const opt = document.createElement('option');
+    opt.value = ch.id;
+    opt.textContent = `${ch.icon} ${ch.title}`;
+    sel.appendChild(opt);
+  });
+}
+
+function saveNote() {
+  const text = document.getElementById('noteInput').value.trim();
+  const chId = document.getElementById('noteChapterSelect').value;
+  if(!text) { showToast('Please write a note first!'); return; }
+  const ch = CHAPTERS.find(c=>c.id===chId);
+  notes.push({ id: Date.now(), text, chapterId: chId, chapterTitle: ch?ch.title:'General', date: new Date().toLocaleDateString() });
+  saveData('notes', notes);
+  document.getElementById('noteInput').value = '';
+  renderNotes();
+  showToast('Note saved! 📝');
+}
+
+function renderNotes() {
+  const container = document.getElementById('savedNotes');
+  if(!container) return;
+  if(!notes.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📝</div><p>No notes yet. Start writing!</p></div>';
+    return;
+  }
+  container.innerHTML = [...notes].reverse().map(n=>`
+    <div class="note-item animate-in">
+      <div style="font-size:0.75rem;color:var(--accent2);margin-bottom:4px;font-weight:600">${n.chapterTitle}</div>
+      <div class="note-item-text">${n.text}</div>
+      <div class="note-item-meta">
+        <span>${n.date}</span>
+        <button class="note-del-btn" onclick="deleteNote(${n.id})">🗑️ Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function deleteNote(id) {
+  notes = notes.filter(n=>n.id!==id);
+  saveData('notes', notes);
+  renderNotes();
+  showToast('Note deleted');
+}
+
+// ===== BOOKMARKS =====
+function toggleBookmark(chId) {
+  const idx = bookmarks.indexOf(chId);
+  if(idx>-1) { bookmarks.splice(idx,1); showToast('Bookmark removed'); }
+  else { bookmarks.push(chId); showToast('Bookmarked! 🔖'); }
+  saveData('bookmarks', bookmarks);
+  const btn = document.getElementById('bmBtn');
+  if(btn) { btn.textContent = bookmarks.includes(chId)?'🔖':'🏷️'; btn.classList.toggle('active', bookmarks.includes(chId)); }
+  renderBookmarks();
+}
+
+function renderBookmarks() {
+  const container = document.getElementById('bookmarksList');
+  if(!container) return;
+  if(!bookmarks.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">🔖</div><p>No bookmarks yet. Bookmark chapters while learning!</p></div>';
+    return;
+  }
+  container.innerHTML = bookmarks.map(id=>{
+    const ch = CHAPTERS.find(c=>c.id===id);
+    if(!ch) return '';
+    return `<div class="bm-item animate-in" onclick="openChapter('${id}')">
+      <div>
+        <div class="bm-item-title">${ch.icon} ${ch.title}</div>
+        <div class="bm-item-sub">${ch.subject}</div>
+      </div>
+      <span style="color:var(--gold)">🔖</span>
+    </div>`;
+  }).join('');
+}
+
+// ===== RANDOM QUESTION =====
+function newRandomQuestion() {
+  const q = ALL_QUESTIONS[Math.floor(Math.random()*ALL_QUESTIONS.length)];
+  state.rqCurrentQuestion = q;
+  document.getElementById('rqQuestion').textContent = q.q;
+  const ans = document.getElementById('rqAnswer');
+  ans.style.display = 'none';
+  ans.textContent = `Answer: ${q.opts[q.ans]} (from: ${q.chapter})`;
+}
+
+function revealAnswer() {
+  if(!state.rqCurrentQuestion) return;
+  const ans = document.getElementById('rqAnswer');
+  ans.style.display = ans.style.display==='none'?'block':'none';
+}
+
+// ===== DARK MODE =====
+function toggleDarkMode() {
+  const html = document.documentElement;
+  if(html.getAttribute('data-theme')==='light') {
+    html.removeAttribute('data-theme');
+    showToast('Dark mode 🌙');
+  } else {
+    html.setAttribute('data-theme','light');
+    showToast('Light mode ☀️');
+  }
+}
+
+// ===== RESET PROGRESS =====
+function resetProgress() {
+  if(confirm('Reset all progress, quizzes, notes and bookmarks?')) {
+    progress = {}; quizScores = {}; notes = []; bookmarks = [];
+    saveData('progress',{}); saveData('quizScores',{}); saveData('notes',[]); saveData('bookmarks',[]);
+    updateHomeStats(); renderProgress(); renderNotes(); renderBookmarks(); renderChapters(); renderQuizChapterList();
+    showToast('Progress reset! 🔄');
+  }
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2000);
+}
+
+// ===== SERVICE WORKER =====
+// Only register SW when running as a local/hosted file (not inside iframe/artifact viewer)
+if('serviceWorker' in navigator && location.protocol !== 'blob:' && !location.hostname.includes('claudeusercontent')) {
+  fetch('service-worker.js', {method:'HEAD'})
+    .then(r => { if(r.ok) navigator.serviceWorker.register('service-worker.js'); })
+    .catch(()=>{}); // silently ignore if file not present
+}
+
+// Initialize random question on load
+window.addEventListener('load', newRandomQuestion);
+</script>
+</body>
+</html>
